@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FinalProject</string>
+    <string name="registration">Registration</string>
+    <string name="welcome_to_androidmart">Welcome to AndroidMart</string>
+    <string name="authorisation">Authorisation</string>
+    <string name="logo_of_store">Logo of Store</string>
+</resources>
