@@ -4,27 +4,31 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
-import android.view.animation.TranslateAnimation
+import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageView
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var myLogo: ImageView
     private lateinit var myLogoText: ImageView
-
+    private lateinit var myLoginButton: Button
+    private lateinit var myRegisterButton: Button
+    private lateinit var myButtons: FrameLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         myLogo = findViewById(R.id.logoView)
         myLogoText = findViewById(R.id.logotextview)
+        myLoginButton = findViewById(R.id.loginButtonWelcomePage)
+        myRegisterButton = findViewById(R.id.registerButtonWelcomePage)
+        myButtons = findViewById(R.id.buttonsFrameLayout)
         startLogo()
         moveLogo()
         startTextLogo()
+        startButtons()
     }
 
     private fun startTextLogo(){
@@ -36,9 +40,6 @@ class MainActivity : AppCompatActivity() {
                 myLogoText.translationX = value
             }
         }
-
-
-
 
         val animatorLogoAppear = ObjectAnimator.ofFloat(myLogoText, "alpha", 0f, 1f)
         animatorLogoAppear.duration = 3000
@@ -57,11 +58,14 @@ class MainActivity : AppCompatActivity() {
 
         val animateUp = ObjectAnimator.ofFloat(myLogo, "translationY", 0f, -750f)
         val animateTextUp = ObjectAnimator.ofFloat(myLogoText,"translationY", 0f, -700f)
+        val animateButtonsUp = ObjectAnimator.ofFloat(myButtons,"translationY", 0f, -700f)
         myLogoText.alpha = 0f
 
         val dur : Long = 1500 //mlsec
 
         animateTextUp.duration = 1
+        animateButtonsUp.duration = 1
+        animateButtonsUp.start()
         animateTextUp.start()
         animateUp.duration = dur // 1000
         animateUp.startDelay = 5500
@@ -79,5 +83,14 @@ class MainActivity : AppCompatActivity() {
         val animatorLogo = ObjectAnimator.ofFloat(myLogo, "alpha", 0f, 1f)
         animatorLogo.duration = 5000
         animatorLogo.start()
+    }
+
+    private fun startButtons(){
+        myButtons.alpha = 0f
+        val animatorButtons = ObjectAnimator.ofFloat(myButtons, "alpha", 0f, 1f)
+        animatorButtons.duration = 1000
+        animatorButtons.startDelay = 8000
+        animatorButtons.start()
+
     }
 }

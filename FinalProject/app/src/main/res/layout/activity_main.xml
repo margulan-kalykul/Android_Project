@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/gray"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -13,8 +14,9 @@
         android:contentDescription="@string/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
 
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
 
@@ -22,11 +24,41 @@
         android:id="@+id/logotextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logoView"
         app:srcCompat="@drawable/androidmarttext" />
+
+    <FrameLayout
+        android:id="@+id/buttonsFrameLayout"
+        android:layout_width="401dp"
+        android:layout_height="208dp"
+        android:layout_marginTop="32dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:paddingTop="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/logotextview"
+        app:layout_constraintStart_toStartOf="@+id/logotextview"
+        app:layout_constraintTop_toBottomOf="@+id/logotextview">
+
+        <Button
+            android:id="@+id/registerButtonWelcomePage"
+            android:layout_width="310dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="100dp"
+            android:background="@color/white"
+            android:text="@string/registerWelcomePageButton"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+
+        <Button
+            android:id="@+id/loginButtonWelcomePage"
+            android:layout_width="310dp"
+            android:layout_height="80dp"
+            android:background="@color/white"
+            android:text="@string/loginWelcomePageButton"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
