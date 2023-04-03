@@ -2,17 +2,19 @@ package com.example.finalproject
 
 import android.content.Context
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.finalproject.databinding.RegistrationBinding
 
 class Registration : AppCompatActivity() {
+    lateinit var binding: RegistrationBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = RegistrationBinding.inflate(layoutInflater)
+        val registration = binding.root
+        setContentView(registration)
 
-        val register = findViewById<Button>(R.id.registerButton)
+        val register = binding.registerButton
         register.setOnClickListener {
             val credentials: Map<String, String> = getFields()
             if (checkCredentials(credentials)) {
@@ -47,10 +49,10 @@ class Registration : AppCompatActivity() {
     }
 
     private fun getFields(): Map<String, String> {
-        val username = findViewById<TextView>(R.id.usernameField).text.toString()
-        val email = findViewById<TextView>(R.id.emailField).text.toString()
-        val password = findViewById<TextView>(R.id.passwordField).text.toString()
-        val confirmPassword = findViewById<TextView>(R.id.passwordConfirmField).text.toString()
+        val username = binding.usernameField.text.toString()
+        val email = binding.emailField.text.toString()
+        val password = binding.passwordField.text.toString()
+        val confirmPassword = binding.passwordConfirmField.text.toString()
         return mapOf("username" to username, "email" to email,
         "password" to password, "confirmPassword" to confirmPassword)
     }
