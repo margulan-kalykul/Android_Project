@@ -38,10 +38,10 @@ class MainActivity : AppCompatActivity() {
             intent = Intent(this, Registration::class.java)
             startActivity(intent)
         }
-        myLoginButton.setOnClickListener {
-            intent = Intent(this, Authorisation::class.java)
-            startActivity(intent)
-        }
+//        myLoginButton.setOnClickListener {
+//            intent = Intent(this, Authorisation::class.java)
+//            startActivity(intent)
+//        }
 
     }
     private val durationOfLogo: Long = 5000
