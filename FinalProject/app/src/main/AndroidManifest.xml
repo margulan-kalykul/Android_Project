@@ -21,7 +21,7 @@
             android:name=".Product"
             android:exported="false" />
         <activity
-            android:name=".ProductPage"
+            android:name=".ProductsPage"
             android:exported="false" />
         <activity
             android:name=".PersonalCabinet"
