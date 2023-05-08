@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Product, Commentary
+from .models import Category, Product, Commentary, Order
 
 from django.contrib.auth.models import User
 
@@ -29,3 +29,11 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Commentary
         fields = ('id', 'user', 'text', 'created_at', 'product')
         read_only_fields = ('id', 'created_at')
+
+class OrderSerializer(serializers.ModelSerializer):
+    user = UserField()
+
+    class Meta:
+        model = Order
+        fields = ('id', 'user', 'products')
+        read_only_fields = ('id', 'user')

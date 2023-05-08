@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, APIView
 from rest_framework.response import Response
 from .models import *
-from .serializers import ProductSerializer, CategorySerializer, CommentSerializer
+from .serializers import ProductSerializer, CategorySerializer, CommentSerializer, OrderSerializer
 from django.http import JsonResponse
 # Create your views here.
 
@@ -55,4 +55,15 @@ def productsByCategory(request, id):
     if request.method == 'GET':
         products = category.products.all()
         serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def list_of_orders_by_user(request, id):
+    try:
+        user = User.objects.get(id=id)
+    except User.DoesNotExist as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'GET':
+        orders = user.orders.all()
+        serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
