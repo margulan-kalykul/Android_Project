@@ -14,6 +14,7 @@ class ProductsPage : AppCompatActivity() {
         binding = ActivityProductPageBinding.inflate(layoutInflater)
         val products_page = binding.root
         setContentView(products_page)
+    }
 
         override fun onCreateOptionsMenu(menu: Menu): Boolean {
             menuInflater.inflate(R.menu.menu_products_page, menu)
@@ -28,5 +29,4 @@ class ProductsPage : AppCompatActivity() {
                 else -> super.onOptionsItemSelected(item)
             }
         }
-    }
 }
