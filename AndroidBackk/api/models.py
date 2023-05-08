@@ -46,3 +46,12 @@ class Commentary(models.Model):
 
     def __str__(self):
         return "Comment {} by {}".format(self.created_at, self.user)
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+    products = models.ForeignKey(Product, related_name="orders", on_delete=models.CASCADE)
+
+
+    def __str__(self):
+        return self.user.__str__()
+
