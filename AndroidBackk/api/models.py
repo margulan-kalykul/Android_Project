@@ -17,7 +17,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.FloatField()
     image = models.TextField()
-    category = models.ManyToManyField(Category, related_name='products')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
 
 
     # def avg_rating(self) -> float:
@@ -35,3 +35,14 @@ class Product(models.Model):
 #     def __str__(self):
 #         return f'{self.product.name}: {self.rating}'
 
+class Commentary(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return "Comment {} by {}".format(self.created_at, self.user)
