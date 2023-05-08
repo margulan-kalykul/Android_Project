@@ -39,8 +39,9 @@ def comments_by_product(request, id):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
     if request.method == 'POST':
+        print(request.data)
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
+            serializer.save(product=product)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({"error": "Error posting comment"}, status=status.HTTP_406_NOT_ACCEPTABLE)

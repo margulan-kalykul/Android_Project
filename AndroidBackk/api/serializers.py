@@ -1,5 +1,9 @@
 from rest_framework import serializers
 from .models import Category, Product, Commentary
+
+from django.contrib.auth.models import User
+
+
 class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -12,10 +16,16 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = '__all__'
 
+class UserField(serializers.Field):
+    def to_internal_value(self, data):
+        return User.objects.get(username=data)
+
+    def to_representation(self, value):
+        return value.username
 class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.StringRelatedField()
+    user = UserField()
 
     class Meta:
         model = Commentary
         fields = ('user', 'text', 'created_at', 'product')
-        read_only_field = ('created_at')
+        read_only_fields = ('created_at', )
