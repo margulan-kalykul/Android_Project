@@ -23,7 +23,7 @@ class ProductsPage : AppCompatActivity() {
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
             return when (item.itemId) {
                 R.id.action_settings -> {
-                    // Handle settings button click
+                    // Handle settings backButton click
                     true
                 }
                 else -> super.onOptionsItemSelected(item)
