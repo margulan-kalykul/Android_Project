@@ -45,3 +45,14 @@ def comments_by_product(request, id):
             serializer.save(product=product)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({"error": "Error posting comment"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+@api_view(['GET'])
+def productsByCategory(request, id):
+    try:
+        category = Category.objects.get(id=id)
+    except Category.DoesNotExist as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'GET':
+        products = category.products.all()
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
