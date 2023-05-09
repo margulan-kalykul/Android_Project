@@ -58,7 +58,7 @@ def productsByCategory(request, id):
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def list_of_orders_by_user(request, id):
     try:
         user = User.objects.get(id=id)
@@ -68,7 +68,12 @@ def list_of_orders_by_user(request, id):
         orders = user.orders.all()
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
-
+    if request.method == 'POST':
+        serializer = OrderSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({"error": "Error posting order"}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 class UserCreateView(generics.CreateAPIView):
     serializer_class = UserSerializer

@@ -28,10 +28,9 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Commentary
         fields = ('id', 'user', 'text', 'created_at', 'product')
-        read_only_fields = ('id', 'created_at')
+        read_only_fields = ('id', 'created_at', 'product')
 
 class OrderSerializer(serializers.ModelSerializer):
-    user = UserField()
 
     class Meta:
         model = Order
