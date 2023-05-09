@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         startButtons()
 
         myRegisterButton.setOnClickListener {
-            intent = Intent(this, ProductsPage::class.java)
+            intent = Intent(this, Registration::class.java)
             startActivity(intent)
         }
 //        myLoginButton.setOnClickListener {
