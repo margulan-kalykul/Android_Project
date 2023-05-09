@@ -9,16 +9,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.json.JSONArray
-import org.json.JSONObject
-import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,47 +17,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var myLoginButton: Button
     private lateinit var myRegisterButton: Button
     private lateinit var myButtons: FrameLayout
-
-    private var client: OkHttpClient = OkHttpClient()
-
-    private fun getRequest(sUrl: String): String? {
-        var result: String? = null
-        try {
-            // Create URL
-            val url = URL(sUrl)
-            // Build request
-            val request = Request.Builder().url(url).build()
-            // Execute request
-            val response = client.newCall(request).execute()
-            print("Response body: ")
-            println(response.body)
-            result = response.body?.string()
-        }
-        catch(err: Error) {
-            println("Error when executing get request: " + err.localizedMessage)
-        }
-        return result
-    }
-
-    private fun fetch(sUrl: String): String {
-        var products: String = ""
-        lifecycleScope.launch(Dispatchers.IO) {
-            val result = getRequest(sUrl)
-            if (result != null) {
-                try {
-                    println(result.toString())
-                    products = result.toString()
-                }
-                catch(err: Error) {
-                    println("Error when parsing JSON: " + err.localizedMessage)
-                }
-            }
-            else {
-                println("Error: Get request returned no response")
-            }
-        }
-        return products
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,17 +35,12 @@ class MainActivity : AppCompatActivity() {
         startButtons()
 
         myRegisterButton.setOnClickListener {
-            intent = Intent(this, Registration::class.java)
+            intent = Intent(this, ProductsPage::class.java)
             startActivity(intent)
         }
 //        myLoginButton.setOnClickListener {
 //            intent = Intent(this, Authorisation::class.java)
 //            startActivity(intent)
-//        }
-        // TODO: Remove comment from this block to fetch products into console with Login button
-//        myLoginButton.setOnClickListener {
-//            val res = fetch("https://e4d1-146-120-202-175.ngrok-free.app/api/products/")
-//            Toast.makeText(this, res, Toast.LENGTH_SHORT).show()
 //        }
 
     }
