@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-$59t#x$r*f+&tl)x9v&h1hb%kmuut6@c_%k7&t_bkb=wf(0#_@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'rest_framework'
+    # "corsheaders"
 ]
 
 REST_FRAMEWORK = {
@@ -51,13 +52,16 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:4200"
+# ]
 ROOT_URLCONF = 'AndroidBackk.urls'
 
 TEMPLATES = [
