@@ -10,7 +10,6 @@
     <string name="loginWelcomePageButton">Login</string>
     <string name="registerWelcomePageButton">Register</string>
     <string name="menu_settings_field">Settings</string>
-    <string name="product_image">Product image</string>
-    <string name="product_name">Product name</string>
-    <string name="rating_bar">Rating bar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
