@@ -98,3 +98,13 @@ def find_email_by_username(request, username):
     if request.method == 'GET':
         data = {'email': user.email}
         return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def product_by_id(request, id):
+    try:
+        product = Product.objects.get(id=id)
+    except Product.DoesNotExist as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'GET':
+        serializer = ProductSerializer(product)
+        return Response(serializer.data, status=status.HTTP_200_OK)
