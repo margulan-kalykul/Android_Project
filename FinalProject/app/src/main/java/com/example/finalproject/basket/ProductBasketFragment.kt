@@ -20,8 +20,8 @@ class ProductBasketFragment : Fragment(), BasketAdapter.Listener {
         binding = FragmentProductBasketBinding.inflate(inflater)
         binding.rcProduct.layoutManager = LinearLayoutManager(context)
         binding.rcProduct.adapter = adapter
-        adapter.addProduct(ProductBasket(1, "YES", "NO", R.drawable.logo, 124.25))
-        adapter.addProduct(ProductBasket(2, "NO", "YES", R.drawable.logo, 124.35))
+        adapter.addProduct(ProductBasket(1, "YES", "NO", 124.25, R.drawable.logo, 2))
+        adapter.addProduct(ProductBasket(2, "NO", "YES", 124.35, R.drawable.logo))
         return binding.root
     }
 
