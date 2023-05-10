@@ -1,5 +1,6 @@
 package com.example.finalproject
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -29,6 +30,12 @@ class PersonalCabinet : AppCompatActivity() {
             intent.putExtra("userId", userId)
             startActivity(intent)
         }
+        binding.logOutButton.setOnClickListener {
+            logOut()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            this.startActivity(intent)
+        }
     }
 
     private fun setContents(username: String?, email: String?){
@@ -36,6 +43,17 @@ class PersonalCabinet : AppCompatActivity() {
         val userEmailInLayout = binding.textView2
         userNameInLayout.text = username
         userEmailInLayout.text = email
+    }
 
+    private fun logOut(){
+        val sharedPreferences = this.getSharedPreferences("tokens", Context.MODE_PRIVATE)
+
+        val editor = sharedPreferences.edit()
+
+        editor.remove("token")
+
+        editor.remove("user")
+
+        editor.apply()
     }
 }

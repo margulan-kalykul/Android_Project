@@ -114,9 +114,8 @@ class Login : AppCompatActivity() {
     private fun retrieveTokenFromStorage(){
         val sharedPreferences = this.getSharedPreferences("tokens", Context.MODE_PRIVATE)
 
-        // Retrieve the token
         val token = sharedPreferences.getString("token", null)
-        // Retrieve the user object as a JSON string and deserialize it
+
         val userJson = sharedPreferences.getString("user", null)
         val user = Gson().fromJson(userJson, User::class.java)
 
