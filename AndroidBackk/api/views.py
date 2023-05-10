@@ -6,6 +6,8 @@ from rest_framework import generics
 from .models import *
 from .serializers import ProductSerializer, CategorySerializer, CommentSerializer, OrderSerializer, UserSerializer
 from django.http import JsonResponse
+
+
 # Create your views here.
 
 @api_view(['GET', 'POST'])
@@ -47,6 +49,7 @@ def comments_by_product(request, id):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({"error": "Error posting comment"}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
+
 @api_view(['GET'])
 def productsByCategory(request, id):
     try:
@@ -57,6 +60,7 @@ def productsByCategory(request, id):
         products = category.products.all()
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
+
 
 @api_view(['GET', 'POST'])
 def list_of_orders_by_user(request, id):
@@ -75,6 +79,17 @@ def list_of_orders_by_user(request, id):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({"error": "Error posting order"}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
+
 class UserCreateView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
+
+@api_view(['GET'])
+def find_user_by_username(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'GET':
+        data = {'id': user.id}
+        return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
