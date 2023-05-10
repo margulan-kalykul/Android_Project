@@ -78,3 +78,13 @@ def list_of_orders_by_user(request, id):
 class UserCreateView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
+
+@api_view(['GET'])
+def find_user_by_username(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'GET':
+        data = {'id': user.id}
+        return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
