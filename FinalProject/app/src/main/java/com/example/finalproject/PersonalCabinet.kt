@@ -26,7 +26,8 @@ class PersonalCabinet : AppCompatActivity() {
 
         binding.productsButton.setOnClickListener {
             val intent = Intent(this, ProductsPage::class.java)
-            
+            intent.putExtra("userId", userId)
+            startActivity(intent)
         }
     }
 
@@ -35,5 +36,6 @@ class PersonalCabinet : AppCompatActivity() {
         val userEmailInLayout = binding.textView2
         userNameInLayout.text = username
         userEmailInLayout.text = email
+
     }
 }

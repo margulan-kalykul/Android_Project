@@ -30,9 +30,6 @@ class ProductsPage : AppCompatActivity() {
         val eListView = binding.eListView
         eListView.setAdapter(listViewAdapter)
 
-
-
-
     }
         private fun showList() {
             chapterList = ArrayList()
