@@ -1,6 +1,7 @@
 package com.example.finalproject
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,29 +39,48 @@ class ExpandableListViewAdapter internal constructor(private val context: Contex
     }
 
     override fun getGroupView(p0: Int, p1: Boolean, p2: View?, p3: ViewGroup?): View {
-        var p2 = p2
+        var view = p2
         val chapterTitle = getGroup(p0) as String
 
-        if(p2 == null){
+        if(view == null){
             val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            p2 = inflater.inflate(R.layout.chapter_list, null)
+            view = inflater.inflate(R.layout.chapter_list, null)
         }
-        val chapterTv = p2!!.findViewById<TextView>(R.id.chapter_tv)
-        chapterTv.setText(chapterTitle)
-        return p2
+        val chapterTv = view!!.findViewById<TextView>(R.id.chapter_tv)
+
+        chapterTv.text = chapterTitle
+        return view
     }
 
-    override fun getChildView(p0: Int, p1: Int, p2: Boolean, p3: View?, p4: ViewGroup?): View {
-        var p3 = p3
+    override fun getChildView(p0: Int, p1: Int, p2: Boolean, p3: View?, p4: ViewGroup?): View? {
+//        var p3 = p3
+//        val topicTitle = getChild(p0, p1) as String
+//
+//        if(p3 == null){
+//
+//            val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+//            p3 = inflater.inflate(R.layout.topics_list, null)
+//        }
+//        val topicTv = p3!!.findViewById<TextView>(R.id.chapter_tv)
+//
+//        topicTv.setText(topicTitle)
+//        return p3
         val topicTitle = getChild(p0, p1) as String
 
-        if(p3 == null){
+        var view = p3
+        if (view == null) {
             val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            p3 = inflater.inflate(R.layout.topics_list, null)
+            view = inflater.inflate(R.layout.topics_list, null)
         }
-        val topicTv = p3!!.findViewById<TextView>(R.id.chapter_tv)
-        topicTv.setText(topicTitle)
-        return p3
+
+        val topicTv = view?.findViewById<TextView>(R.id.chapter_tv)
+        if (topicTv == null) {
+            return view
+        }
+
+        topicTv.text = topicTitle
+
+        return view
     }
 
     override fun isChildSelectable(p0: Int, p1: Int): Boolean {
