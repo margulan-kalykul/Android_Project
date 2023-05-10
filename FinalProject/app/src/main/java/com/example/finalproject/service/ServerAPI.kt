@@ -8,6 +8,7 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 import com.example.finalproject.interfaces.Token
 import com.example.finalproject.interfaces.UserLogin
+import com.example.finalproject.interfaces.users.UserEmail
 import com.example.finalproject.interfaces.users.UserId
 import retrofit2.Call
 import retrofit2.http.*
@@ -15,6 +16,8 @@ import retrofit2.http.*
 interface ServerAPI {
     @GET("user/{username}")
     suspend fun getUser(@Path("username") userName: String?): UserId
+    @GET("user/email/{username}")
+    suspend fun getUserEmail(@Path("username") userName: String?): UserEmail
     @GET("products/")
     suspend fun getProducts(): List<Product>
 
