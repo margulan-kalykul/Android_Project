@@ -92,6 +92,7 @@ class Registration : AppCompatActivity() {
             startActivity(intent)
         } catch (e: java.lang.Exception) {
             println("Exception: " + e.message)
+            showToast(applicationContext, "User may already be registered")
         }
     }
 }
