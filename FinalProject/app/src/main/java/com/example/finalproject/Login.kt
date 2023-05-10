@@ -23,6 +23,12 @@ class Login : AppCompatActivity() {
         val loginPage = binding.root
         setContentView(loginPage)
 
+        val userName = intent.extras?.getString("username")
+        val passWord = intent.extras?.getString("password")
+        if (userName != null && passWord != null) {
+            binding.usernameField.setText(userName)
+            binding.passwordField.setText(passWord)
+        }
 
         val client = OkHttpClient.Builder().build()
         val retrofit = RetrofitHelper(client)

@@ -31,11 +31,11 @@ class Registration : AppCompatActivity() {
         register.setOnClickListener {
             val credentials: Map<String, String> = getFields()
             if (checkCredentials(credentials)) {
-                // code to make our progress bar visible
-                binding.progressBar.visibility = View.VISIBLE
-                enterUser(credentials)
-                binding.progressBar.visibility = View.GONE
-                authorise()
+                CoroutineScope(Dispatchers.IO).launch {
+                    //binding.progressBar.visibility = View.VISIBLE
+                    enterUser(credentials)
+                    //binding.progressBar.visibility = View.GONE
+                }
             }
         }
 
@@ -73,46 +73,25 @@ class Registration : AppCompatActivity() {
     }
 
     // try posting to server and print message
-    private fun enterUser(credentials: Map<String, String>) {
-        CoroutineScope(Dispatchers.IO).launch {
-            var response: UserResponse? = null
-            try {
-                val username: String = credentials["username"]!!
-                val email: String = credentials["email"]!!
-                val password: String = credentials["password"]!!
+    private suspend fun enterUser(credentials: Map<String, String>) {
+        val username: String = credentials["username"]!!
+        val email: String = credentials["email"]!!
+        val password: String = credentials["password"]!!
 
-                val client = OkHttpClient.Builder().build()
-                val retrofit = RetrofitHelper(client)
-                val rf = retrofit.getInstance()
-                val itemAPI = rf.create(ServerAPI::class.java)
+        val client = OkHttpClient.Builder().build()
+        val retrofit = RetrofitHelper(client)
+        val rf = retrofit.getInstance()
+        val itemAPI = rf.create(ServerAPI::class.java)
 
-                response = itemAPI.registerUser(UserRegister(username, email, password))
-            } catch (e: java.lang.Exception) {
-                response = UserResponse(-1, e.message.toString(), e.message.toString())
-                println("Exception: " + e.message)
-            }
+        try {
+            val response: UserResponse = itemAPI.registerUser(UserRegister(username, email, password))
             println(response)
+            val intent = Intent(this, Login::class.java)
+            intent.putExtra("username", username)
+            intent.putExtra("password", password)
+            startActivity(intent)
+        } catch (e: java.lang.Exception) {
+            println("Exception: " + e.message)
         }
     }
-
-    // finish registration
-    private fun authorise(/*loginData: Map<String, String>*/) {
-        showToast(this, "You have registered")
-        val intent = Intent(this, Login::class.java)
-//        intent.putExtra("username", loginData["username"])
-//        intent.putExtra("password", loginData["password"])
-        startActivity(intent)
-    }
 }
-// This will go to the MainActivity, not finished
-/*private fun updateSize(){
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        val screenWidth = displayMetrics.widthPixels
-        val screenHeight = displayMetrics.heightPixels
-
-        val res = resources
-        val screenWidthString = screenWidth.toString() + "px"
-        val screenHeightString = screenHeight.toString() + "px"
-        val widthId = R.val.screen
-    }*/
