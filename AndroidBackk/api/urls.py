@@ -10,6 +10,7 @@ urlpatterns = [
     path('products/', list_of_products),
     path('product/<int:id>/commentaries/', comments_by_product),
 
+
     path('categories/', list_of_categories),
     path('category/<int:id>/products/', productsByCategory),
 
