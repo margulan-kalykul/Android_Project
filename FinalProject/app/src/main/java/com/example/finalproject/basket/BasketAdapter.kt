@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.finalproject.R
 import com.example.finalproject.databinding.BasketProductBinding
+import kotlin.math.roundToInt
 
 class BasketAdapter(val listener: Listener): RecyclerView.Adapter<BasketAdapter.BasketHolder>() {
     class BasketHolder(item: View): RecyclerView.ViewHolder(item) {
@@ -23,16 +24,19 @@ class BasketAdapter(val listener: Listener): RecyclerView.Adapter<BasketAdapter.
                 productID.text = id
                 productName.text = name
                 productImage.setImageResource(image)
-                productPrice.text = (price * count).toString()
+                productPrice.text = ((price * count * 100).roundToInt() / 100.0).toString()
                 productCount.text = count.toString()
                 btnPlus.setOnClickListener {
                     productCount.text = (++count).toString()
-                    productPrice.text = (price * count).toString()
+                    productPrice.text = ((price * count * 100).roundToInt() / 100.0).toString()
                     product.count = count
+                    listener.onUpdate()
                 }
                 btnMinus.setOnClickListener {
                     productCount.text = (--count).toString()
-                    productPrice.text = (price * count).toString()
+                    productPrice.text = ((price * count * 100).roundToInt() / 100.0).toString()
+                    product.count = count
+                    listener.onUpdate()
                     if(count == 0) listener.onDelete(product)
                 }
             }
@@ -62,8 +66,14 @@ class BasketAdapter(val listener: Listener): RecyclerView.Adapter<BasketAdapter.
         notifyDataSetChanged()
     }
 
+    fun clearProduct() {
+        basket.clear()
+        notifyDataSetChanged()
+    }
+
     interface Listener {
         fun onClick(product: ProductBasket)
         fun onDelete(product: ProductBasket)
+        fun onUpdate()
     }
 }
