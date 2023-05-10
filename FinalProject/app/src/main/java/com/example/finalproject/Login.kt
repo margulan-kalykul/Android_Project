@@ -34,7 +34,7 @@ class Login : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val loginPage = binding.root
         setContentView(loginPage)
-        retrieveTokenFromStorage()
+
 
         val userName = intent.extras?.getString("username")
         val passWord = intent.extras?.getString("password")
@@ -111,21 +111,21 @@ class Login : AppCompatActivity() {
         sharedPreferences.edit().putString("user", userJson).apply()
     }
 
-    private fun retrieveTokenFromStorage(){
-        val sharedPreferences = this.getSharedPreferences("tokens", Context.MODE_PRIVATE)
-
-        val token = sharedPreferences.getString("token", null)
-
-        val userJson = sharedPreferences.getString("user", null)
-        val user = Gson().fromJson(userJson, User::class.java)
-
-        if (token != null && user != null){
-            Log.d("token", token)
-            Log.d("user", user.toString())
-
-            makeIntent(user.id, user.username, user.userEmail)
-        }
-    }
+//    private fun retrieveTokenFromStorage(){
+//        val sharedPreferences = this.getSharedPreferences("tokens", Context.MODE_PRIVATE)
+//
+//        val token = sharedPreferences.getString("token", null)
+//
+//        val userJson = sharedPreferences.getString("user", null)
+//        val user = Gson().fromJson(userJson, User::class.java)
+//
+//        if (token != null && user != null){
+//            Log.d("token", token)
+//            Log.d("user", user.toString())
+//
+//            makeIntent(user.id, user.username, user.userEmail)
+//        }
+//    }
 
     private fun showToast(context: Context, text: String) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
