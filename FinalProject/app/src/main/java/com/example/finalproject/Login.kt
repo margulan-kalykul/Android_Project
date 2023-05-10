@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.finalproject.databinding.ActivityLoginBinding
 import com.example.finalproject.interfaces.UserLogin
+import com.example.finalproject.interfaces.users.UserEmail
 import com.example.finalproject.interfaces.users.UserId
 import com.example.finalproject.retrofit.RetrofitHelper
 import com.example.finalproject.service.ServerAPI
@@ -31,6 +32,12 @@ class Login : AppCompatActivity() {
         val loginPage = binding.root
         setContentView(loginPage)
 
+        val userName = intent.extras?.getString("username")
+        val passWord = intent.extras?.getString("password")
+        if (userName != null && passWord != null) {
+            binding.usernameField.setText(userName)
+            binding.passwordField.setText(passWord)
+        }
 
         val loginButton = binding.buttonLogin
         loginButton.setOnClickListener{
@@ -44,10 +51,12 @@ class Login : AppCompatActivity() {
                 CoroutineScope(Dispatchers.IO).launch {
                     if( isUserExist(credentials) ){
                         val userId: UserId = getUserId(username)
+                        val userEmail: UserEmail = getUserEmail(username)
 
                         val intent = Intent(applicationContext, PersonalCabinet::class.java)
                         intent.putExtra("userId", userId.id)
                         intent.putExtra("userName", username)
+                        intent.putExtra("userEmail", userEmail.email)
                         startActivity(intent)
                     }
                 }
@@ -79,8 +88,12 @@ class Login : AppCompatActivity() {
     }
 
     private suspend fun getUserId(username: String): UserId {
-        Log.d("data", this.itemAPI.getUser(username).toString())
+        Log.d("dataId", this.itemAPI.getUser(username).toString())
         return this.itemAPI.getUser(username)
+    }
+    private suspend fun getUserEmail(username: String): UserEmail {
+        Log.d("dataEmail", this.itemAPI.getUserEmail(username).toString())
+        return this.itemAPI.getUserEmail(username)
     }
     private fun showToast(context: Context, text: String) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
