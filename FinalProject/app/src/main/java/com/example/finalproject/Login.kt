@@ -7,11 +7,14 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.finalproject.databinding.ActivityLoginBinding
+import com.example.finalproject.interfaces.Token
 import com.example.finalproject.interfaces.UserLogin
+import com.example.finalproject.interfaces.users.User
 import com.example.finalproject.interfaces.users.UserEmail
 import com.example.finalproject.interfaces.users.UserId
 import com.example.finalproject.retrofit.RetrofitHelper
 import com.example.finalproject.service.ServerAPI
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,13 +27,14 @@ class Login : AppCompatActivity() {
     val retrofit = RetrofitHelper(client)
     val rf = retrofit.getInstance()
     val itemAPI = rf.create(ServerAPI::class.java)
-
+    val tokens = Token("", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val loginPage = binding.root
         setContentView(loginPage)
+        retrieveTokenFromStorage()
 
         val userName = intent.extras?.getString("username")
         val passWord = intent.extras?.getString("password")
@@ -53,11 +57,8 @@ class Login : AppCompatActivity() {
                         val userId: UserId = getUserId(username)
                         val userEmail: UserEmail = getUserEmail(username)
 
-                        val intent = Intent(applicationContext, PersonalCabinet::class.java)
-                        intent.putExtra("userId", userId.id)
-                        intent.putExtra("userName", username)
-                        intent.putExtra("userEmail", userEmail.email)
-                        startActivity(intent)
+                        putInStorage(userId.id, username, userEmail.email, tokens)
+                        makeIntent(userId.id, username, userEmail.email)
                     }
                 }
             }
@@ -76,6 +77,8 @@ class Login : AppCompatActivity() {
     private suspend fun isUserExist(credentials: UserLogin): Boolean{
         try {
             val listTokens = this.itemAPI.postUserCredentials(credentials)
+            this.tokens.refresh = listTokens.refresh
+            this.tokens.access = listTokens.access
             Log.d("data", listTokens.toString())
         } catch (e: HttpException){
             runOnUiThread {
@@ -95,11 +98,50 @@ class Login : AppCompatActivity() {
         Log.d("dataEmail", this.itemAPI.getUserEmail(username).toString())
         return this.itemAPI.getUserEmail(username)
     }
+    private fun putInStorage(id: Int, username: String, userEmail:String, token: Token){
+        val sharedPreferences = this.getSharedPreferences("tokens", Context.MODE_PRIVATE)
+
+        // Store the token
+        val storingToken = token.access
+        sharedPreferences.edit().putString("token", storingToken).apply()
+
+        // Store the user object as a JSON string
+        val user = User(id,username,userEmail)
+        val userJson = Gson().toJson(user)
+        sharedPreferences.edit().putString("user", userJson).apply()
+    }
+
+    private fun retrieveTokenFromStorage(){
+        val sharedPreferences = this.getSharedPreferences("tokens", Context.MODE_PRIVATE)
+
+        // Retrieve the token
+        val token = sharedPreferences.getString("token", null)
+        // Retrieve the user object as a JSON string and deserialize it
+        val userJson = sharedPreferences.getString("user", null)
+        val user = Gson().fromJson(userJson, User::class.java)
+
+        if (token != null && user != null){
+            Log.d("token", token)
+            Log.d("user", user.toString())
+
+            makeIntent(user.id, user.username, user.userEmail)
+        }
+    }
+
     private fun showToast(context: Context, text: String) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
 
     private fun infoAboutError(){
 
+    }
+
+
+    private fun makeIntent(userId: Int, username: String, userEmail: String){
+        val intent = Intent(applicationContext, PersonalCabinet::class.java)
+        intent.putExtra("userId", userId)
+        intent.putExtra("userName", username)
+        intent.putExtra("userEmail", userEmail)
+        startActivity(intent)
     }
 }
