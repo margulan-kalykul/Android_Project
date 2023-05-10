@@ -1,5 +1,6 @@
 package com.example.finalproject
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,13 +16,18 @@ class PersonalCabinet : AppCompatActivity() {
         val PersonalCabinetPage = binding.root
         setContentView(PersonalCabinetPage)
 
-        val id: Int? = intent.extras?.getInt("userId")
+        val userId: Int? = intent.extras?.getInt("userId")
         val userName: String? = intent.extras?.getString("userName")
         val userEmail: String? = intent.extras?.getString("userEmail")
-        if (id != null) {
-            Log.d("data", id.toString())
+        if (userId != null) {
+            Log.d("data", userId.toString())
         }
         setContents(userName, userEmail)
+
+        binding.productsButton.setOnClickListener {
+            val intent = Intent(this, ProductsPage::class.java)
+            
+        }
     }
 
     private fun setContents(username: String?, email: String?){
