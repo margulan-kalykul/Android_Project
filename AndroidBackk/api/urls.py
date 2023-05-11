@@ -25,5 +25,4 @@ urlpatterns = [
     path('user/email/<str:username>', find_email_by_username),
 
     path('rating/<int:productId>/', product_ratings, name='ratings_for_a_product'),
-    path('rating/<int:productId>/<int:userId>/', change_rating_for_user, name='get_user_rating_for_a_product')
 ]
