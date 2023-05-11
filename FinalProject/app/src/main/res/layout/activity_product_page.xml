@@ -9,11 +9,15 @@
     android:padding = "8dp"
     tools:context=".ProductsPage">
 
-    <ExpandableListView
+    <SearchView
+        android:id="@+id/sv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ExpandableListView
         android:id="@+id/eListView"
-        android:layoutDirection="rtl"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutDirection="rtl" />
 
 </LinearLayout>

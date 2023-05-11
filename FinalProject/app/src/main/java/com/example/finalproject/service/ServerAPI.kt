@@ -36,5 +36,7 @@ interface ServerAPI {
     @POST("token/")
     suspend fun postUserCredentials(
         @Body userCred: UserLogin): Token
+    @GET("products/")
+    suspend fun getProductsByName(@Query("q") name: String): Product
 
 }
