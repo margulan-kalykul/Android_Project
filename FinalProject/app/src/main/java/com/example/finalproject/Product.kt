@@ -63,7 +63,7 @@ class Product : AppCompatActivity() {
         val rf = retrofit.getInstance()
         val itemAPI = rf.create(ServerAPI::class.java)
 
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             val product = itemAPI.getProduct(productId)
             val image = product.image
             val name = product.name
@@ -87,7 +87,9 @@ class Product : AppCompatActivity() {
 
         binding.btnAddCart.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
+
                 itemAPI.postCartProducts(userId, ProductsInCart(productId))
+
             }
         }
 
