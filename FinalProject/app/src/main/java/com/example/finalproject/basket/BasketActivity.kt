@@ -11,6 +11,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.example.finalproject.R
 import com.example.finalproject.buypage.BuyPageActivity
 import com.example.finalproject.databinding.ActivityBasketBinding
+import com.example.finalproject.retrofit.RetrofitHelper
+import com.example.finalproject.service.ServerAPI
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
 import kotlin.math.roundToInt
 
 class BasketActivity : AppCompatActivity(), FragmentListener {
@@ -18,7 +24,11 @@ class BasketActivity : AppCompatActivity(), FragmentListener {
     lateinit var binding: ActivityBasketBinding
     private val fragment = ProductBasketFragment.newInstance()
     private lateinit var launcher: ActivityResultLauncher<Intent>
-
+    
+    private val client = OkHttpClient.Builder().build()
+    private val retrofit = RetrofitHelper(client)
+    private val rf = retrofit.getInstance()
+    private val itemAPI = rf.create(ServerAPI::class.java)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBasketBinding.inflate(layoutInflater)
