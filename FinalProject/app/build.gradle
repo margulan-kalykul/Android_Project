@@ -67,5 +67,5 @@ dependencies {
     implementation "androidx.activity:activity-ktx:1.6.1"
     // Klaxon
     implementation 'com.beust:klaxon:5.5'
-    implementation 'com.paypal.sdk:paypal-android-sdk:2.15.3'
+    implementation 'com.paypal.sdk:paypal-android-sdk:2.16.0'
 }

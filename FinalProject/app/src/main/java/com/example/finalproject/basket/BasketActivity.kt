@@ -24,16 +24,17 @@ class BasketActivity : AppCompatActivity(), FragmentListener {
     lateinit var binding: ActivityBasketBinding
     private val fragment = ProductBasketFragment.newInstance()
     private lateinit var launcher: ActivityResultLauncher<Intent>
-    
-    private val client = OkHttpClient.Builder().build()
-    private val retrofit = RetrofitHelper(client)
-    private val rf = retrofit.getInstance()
-    private val itemAPI = rf.create(ServerAPI::class.java)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBasketBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val userID = intent.getIntExtra("userId", 1)
+        val bundle = Bundle()
+        bundle.putInt("userID", userID)
+        fragment.arguments = bundle
+
         supportFragmentManager.beginTransaction()
             .replace(R.id.frameLayout, fragment).commit()
 

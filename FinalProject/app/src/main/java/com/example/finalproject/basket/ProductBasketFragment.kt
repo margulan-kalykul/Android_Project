@@ -9,12 +9,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.finalproject.R
 import com.example.finalproject.databinding.FragmentProductBasketBinding
+import com.example.finalproject.retrofit.RetrofitHelper
+import com.example.finalproject.service.ServerAPI
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
 
 class ProductBasketFragment : Fragment(), BasketAdapter.Listener {
     lateinit var binding: FragmentProductBasketBinding
     private var adapter = BasketAdapter(this)
     private var listener: FragmentListener? = null
     private var sum: Double = 0.0
+
+    private val client = OkHttpClient.Builder().build()
+    private val retrofit = RetrofitHelper(client)
+    private val rf = retrofit.getInstance()
+    private val itemAPI = rf.create(ServerAPI::class.java)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,12 +34,23 @@ class ProductBasketFragment : Fragment(), BasketAdapter.Listener {
         binding = FragmentProductBasketBinding.inflate(inflater)
         binding.rcProduct.layoutManager = LinearLayoutManager(context)
         binding.rcProduct.adapter = adapter
-        adapter.addProduct(ProductBasket(1, "YES", "NO", 124.25, R.drawable.logo, 2))
-        adapter.addProduct(ProductBasket(2, "NO", "YES", 124.35, R.drawable.logo))
-
-        for(product in basket) sum += (product.price * product.count)
-        sendDataToActivity()
-
+//        adapter.addProduct(ProductBasket(1, "YES", "NO", 124.25, R.drawable.logo, 2))
+//        adapter.addProduct(ProductBasket(2, "NO", "YES", 124.35, R.drawable.logo))
+        val userID = arguments?.getInt("userID")
+        CoroutineScope(Dispatchers.IO).launch {
+            if(userID != null) {
+                val products = itemAPI.getCartProducts(userID)
+                val productSet = mutableSetOf<Int>()
+                for(productID in products) productSet.add(productID.products)
+                for(productID in productSet) {
+                    val product = itemAPI.getProduct(productID)
+                    val productBasket = ProductBasket(product.id, product.name, product.description, product.price.toDouble(), R.drawable.logo)
+                    basket.add(productBasket)
+                }
+                for(product in basket) sum += (product.price * product.count)
+                sendDataToActivity()
+            }
+        }
         return binding.root
     }
 
