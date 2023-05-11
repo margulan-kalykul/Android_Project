@@ -34,6 +34,7 @@ class ProductBasketFragment : Fragment(), BasketAdapter.Listener {
         binding = FragmentProductBasketBinding.inflate(inflater)
         binding.rcProduct.layoutManager = LinearLayoutManager(context)
         binding.rcProduct.adapter = adapter
+        basket.clear()
 //        adapter.addProduct(ProductBasket(1, "YES", "NO", 124.25, R.drawable.logo, 2))
 //        adapter.addProduct(ProductBasket(2, "NO", "YES", 124.35, R.drawable.logo))
         val userID = arguments?.getInt("userID")
