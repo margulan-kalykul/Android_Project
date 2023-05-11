@@ -2,13 +2,18 @@ package com.example.finalproject
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
+import com.example.finalproject.interfaces.users.User
+import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,6 +38,16 @@ class MainActivity : AppCompatActivity() {
         moveLogo()
         appearTextLogo()
         startButtons()
+
+        val delayMillis = 8000L // 2 seconds
+        // Create a Handler object
+        val handler = Handler()
+        // Define a Runnable to perform the delayed action
+        val runnable = Runnable {
+            retrieveTokenFromStorage()
+        }
+        // Use the Handler to post the Runnable with the delay
+        handler.postDelayed(runnable, delayMillis)
 
         myRegisterButton.setOnClickListener {
             intent = Intent(this, Registration::class.java)
@@ -103,6 +118,7 @@ class MainActivity : AppCompatActivity() {
 
     }
     private fun startButtons(){
+
         myButtons.alpha = 0f
         val animatorButtons = ObjectAnimator.ofFloat(myButtons, "alpha", 0f, 1f)
         animatorButtons.duration = durationOfAppearButtons
@@ -110,4 +126,29 @@ class MainActivity : AppCompatActivity() {
         animatorButtons.start()
 
     }
+
+    private fun retrieveTokenFromStorage(){
+        val sharedPreferences = this.getSharedPreferences("tokens", Context.MODE_PRIVATE)
+
+        val token = sharedPreferences.getString("token", null)
+
+        val userJson = sharedPreferences.getString("user", null)
+        val user = Gson().fromJson(userJson, User::class.java)
+
+        if (token != null && user != null){
+            Log.d("token", token)
+            Log.d("user", user.toString())
+
+            makeIntent(user.id, user.username, user.userEmail)
+        }
+    }
+    private fun makeIntent(userId: Int, username: String, userEmail: String){
+        val intent = Intent(applicationContext, PersonalCabinet::class.java)
+        intent.putExtra("userId", userId)
+        intent.putExtra("userName", username)
+        intent.putExtra("userEmail", userEmail)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        applicationContext.startActivity(intent)
+    }
+
 }

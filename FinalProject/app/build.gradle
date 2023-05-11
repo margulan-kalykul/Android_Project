@@ -39,11 +39,11 @@ dependencies {
 
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.fragment:fragment-ktx:1.5.7'
-    implementation 'androidx.core:core-ktx:1.8.10'
+
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-
+    implementation 'androidx.core:core-ktx:1.8.10'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
@@ -53,7 +53,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     // retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     // GSON
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     // coroutine
@@ -68,5 +67,5 @@ dependencies {
     implementation "androidx.activity:activity-ktx:1.6.1"
     // Klaxon
     implementation 'com.beust:klaxon:5.5'
-
+    implementation 'com.paypal.sdk:paypal-android-sdk:2.15.3'
 }

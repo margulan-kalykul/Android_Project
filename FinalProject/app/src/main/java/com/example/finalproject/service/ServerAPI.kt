@@ -17,6 +17,10 @@ interface ServerAPI {
     suspend fun getProducts(): List<Product>
     @GET("product/{id}/commentaries")
     suspend fun getProductComments(@Path("id") id: String?): List<Comment>
+    @GET("product/{id}")
+    suspend fun getProduct(@Path("id") id: Int): Product
+    @GET("cart/{userId}")
+    suspend fun getCartProducts(@Path("userId") userId: Int): List<ProductsInCart>
 
     @POST("register/user/")
     suspend fun registerUser(@Body user: UserRegister): UserResponse

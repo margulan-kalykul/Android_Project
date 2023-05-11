@@ -11,71 +11,77 @@ import com.example.finalproject.service.ServerAPI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import com.example.finalproject.interfaces.Product as PrInterface
+import kotlinx.coroutines.async
 
 
 class ProductsPage : AppCompatActivity() {
     lateinit var binding: ActivityProductPageBinding
-
+    val client = OkHttpClient.Builder().build()
+    val retrofit = RetrofitHelper(client)
+    val rf = retrofit.getInstance()
+    val itemAPI = rf.create(ServerAPI::class.java)
     private lateinit var listViewAdapter : ExpandableListViewAdapter
     private lateinit var chapterList : List<String>
-    private lateinit var topicList : HashMap<String, List<String>>
+    private lateinit var topicList : HashMap<String, List<PrInterface>>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductPageBinding.inflate(layoutInflater)
         val products_page = binding.root
         setContentView(products_page)
-        showList()
+        CoroutineScope(Dispatchers.Main).launch {
+            val call = itemAPI.getProducts()
 
-        listViewAdapter = ExpandableListViewAdapter(this, chapterList, topicList)
-        val eListView = binding.eListView
-        eListView.setAdapter(listViewAdapter)
+            showList(call)
 
-
-
-
-    }
-        private fun showList() {
-            chapterList = ArrayList()
-            topicList = HashMap()
-            (chapterList as ArrayList<String>).add("Chapter 1")
-            (chapterList as ArrayList<String>).add("Chapter 2")
-            (chapterList as ArrayList<String>).add("Chapter 3")
-            (chapterList as ArrayList<String>).add("Chapter 4")
-            (chapterList as ArrayList<String>).add("Chapter 5")
-
-            val topic1 : MutableList<String> = ArrayList()
-            topic1.add("Topic 1")
-            topic1.add("Topic 2")
-            topic1.add("Topic 3")
-
-            val topic2 : MutableList<String> = ArrayList()
-            topic2.add("Topic 1")
-            topic2.add("Topic 2")
-            topic2.add("Topic 3")
-
-            val topic3 : MutableList<String> = ArrayList()
-            topic3.add("Topic 1")
-            topic3.add("Topic 2")
-            topic3.add("Topic 3")
-
-            val topic4 : MutableList<String> = ArrayList()
-            topic4.add("Topic 1")
-            topic4.add("Topic 2")
-            topic4.add("Topic 3")
-
-            val topic5 : MutableList<String> = ArrayList()
-            topic5.add("Topic 1")
-            topic5.add("Topic 2")
-            topic5.add("Topic 3")
-
-            topicList[chapterList[0]] = topic1
-            topicList[chapterList[1]] = topic2
-            topicList[chapterList[2]] = topic3
-            topicList[chapterList[3]] = topic4
-            topicList[chapterList[4]] = topic5
+            listViewAdapter = ExpandableListViewAdapter(this@ProductsPage, chapterList, topicList)
+            Log.d("tuopics", topicList.toString())
+            val eListView = binding.eListView
+            eListView.setAdapter(listViewAdapter)
         }
 
-        override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        CoroutineScope(Dispatchers.Main).launch {
+//            pr.await()
+//        }
+
+    }
+    private fun showList(call: List<PrInterface>) {
+        Log.d("call:" , call.toString())
+        chapterList = ArrayList()
+        topicList = HashMap()
+        (chapterList as ArrayList<String>).add(call[0].name)
+        (chapterList as ArrayList<String>).add(call[1].name)
+        (chapterList as ArrayList<String>).add(call[2].name)
+        (chapterList as ArrayList<String>).add(call[3].name)
+        (chapterList as ArrayList<String>).add(call[4].name)
+
+        val topic1 : MutableList<PrInterface> = ArrayList()
+        topic1.add(call[0])
+
+        Log.d("topic1", topic1.toString())
+
+        val topic2 : MutableList<PrInterface> = ArrayList()
+        topic2.add(call[1])
+
+        val topic3 : MutableList<PrInterface> = ArrayList()
+        topic3.add(call[2])
+
+        val topic4 : MutableList<PrInterface> = ArrayList()
+        topic4.add(call[3])
+
+        val topic5 : MutableList<PrInterface> = ArrayList()
+        topic5.add(call[4])
+
+        Log.d("topic5", topic5.toString())
+        topicList[chapterList[0]] = topic1
+        topicList[chapterList[1]] = topic2
+        topicList[chapterList[2]] = topic3
+        topicList[chapterList[3]] = topic4
+        topicList[chapterList[4]] = topic5
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
             menuInflater.inflate(R.menu.menu_products_page, menu)
             return true
         }
@@ -88,4 +94,5 @@ class ProductsPage : AppCompatActivity() {
                 else -> super.onOptionsItemSelected(item)
             }
         }
+
 }
