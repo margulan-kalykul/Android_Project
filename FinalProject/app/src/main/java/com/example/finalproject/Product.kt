@@ -101,7 +101,14 @@ class Product : AppCompatActivity() {
                 Log.d("comment:", comment.toString())
                 val postComment = itemAPI.postProductComments(productId, comment)
                 Log.d("comment:", postComment.toString())
-                
+                val response: List<Comment> = itemAPI.getProductComments(productId.toString())
+                withContext(Dispatchers.Main) {
+                    val commentString = mutableListOf<String>()
+                    for (comment in response) {
+                        commentString.add(comment.user + "\n" + comment.text)
+                    }
+                    comments.value = commentString
+                }
             }
         }
         Log.d("test", "got here")
