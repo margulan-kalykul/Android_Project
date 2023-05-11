@@ -14,7 +14,7 @@ import com.example.finalproject.databinding.ActivityBasketBinding
 import kotlin.math.roundToInt
 
 class BasketActivity : AppCompatActivity(), FragmentListener {
-    private var sum: Double = 0.0
+    private var total: Double = 0.0
     lateinit var binding: ActivityBasketBinding
     private val fragment = ProductBasketFragment.newInstance()
     private lateinit var launcher: ActivityResultLauncher<Intent>
@@ -38,12 +38,12 @@ class BasketActivity : AppCompatActivity(), FragmentListener {
         }
         binding.btnBuy.setOnClickListener {
             val intent = Intent(this, BuyPageActivity::class.java)
-            intent.putExtra("sum", sum)
+            Log.i("summ", total.toString())
+            intent.putExtra("sum", total)
             launcher.launch(intent)
         }
-
-        for(product in basket) sum += product.price * product.count
-        binding.basketText.text = "Моя корзина: " + ((sum * 100).roundToInt() / 100.0).toString()
+        for(product in basket) total += product.price * product.count
+        binding.basketText.text = "Моя корзина: " + ((total * 100).roundToInt() / 100.0).toString()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -52,6 +52,7 @@ class BasketActivity : AppCompatActivity(), FragmentListener {
     }
 
     override fun onFragmentSum(sum: Double) {
-        binding.basketText.text = "Моя корзина: " + ((sum * 100).roundToInt() / 100.0).toString()
+        total = (sum * 100).roundToInt() / 100.0
+        binding.basketText.text = "Моя корзина: " + total.toString()
     }
 }
