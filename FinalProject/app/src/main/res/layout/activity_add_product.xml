@@ -25,7 +25,9 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Name"
+                android:textColor="@color/black"
+                android:text="Name:"
+                android:gravity="center"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,7 +36,9 @@
                 android:layout_width="90dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="32dp"
-                android:text="Description"
+                android:textColor="@color/black"
+                android:text="Description:"
+                android:gravity="center"
                 app:layout_constraintStart_toStartOf="@+id/textView10"
                 app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -43,7 +47,9 @@
                 android:layout_width="90dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="108dp"
-                android:text="Price"
+                android:textColor="@color/black"
+                android:text="Price:"
+                android:gravity="center"
                 app:layout_constraintStart_toStartOf="@+id/textView13"
                 app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -52,7 +58,9 @@
                 android:layout_width="90dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="20dp"
+                android:textColor="@color/black"
                 android:text="Image"
+                android:gravity="center"
                 app:layout_constraintStart_toStartOf="@+id/textView14"
                 app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
@@ -61,7 +69,9 @@
                 android:layout_width="90dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="20dp"
+                android:textColor="@color/black"
                 android:text="Category"
+                android:gravity="center"
                 app:layout_constraintStart_toStartOf="@+id/textView15"
                 app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
@@ -76,7 +86,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/textView10"
                 app:layout_constraintStart_toEndOf="@+id/textView10"
                 app:layout_constraintTop_toTopOf="@+id/textView10"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="1.0" />
 
             <EditText
                 android:id="@+id/editTextTextPersonName2"
@@ -90,20 +100,44 @@
                 app:layout_constraintBottom_toBottomOf="@+id/textView13"
                 app:layout_constraintStart_toEndOf="@+id/textView13"
                 app:layout_constraintTop_toTopOf="@+id/textView13"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.09" />
 
             <EditText
                 android:id="@+id/editTextNumber"
-                android:layout_width="81dp"
-                android:layout_height="43dp"
+                android:layout_width="98dp"
+                android:layout_height="49dp"
                 android:layout_marginStart="48dp"
                 android:ems="10"
+                android:hint="price"
                 android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="@+id/textView14"
                 app:layout_constraintStart_toEndOf="@+id/textView14"
                 app:layout_constraintTop_toTopOf="@+id/textView14"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="1.0" />
 
+            <EditText
+                android:id="@+id/editTextTextPersonName3"
+                android:layout_width="212dp"
+                android:layout_height="49dp"
+                android:layout_marginStart="48dp"
+                android:ems="10"
+                android:hint="URL"
+                android:inputType="textPersonName"
+                app:layout_constraintBottom_toBottomOf="@+id/textView15"
+                app:layout_constraintStart_toEndOf="@+id/textView15"
+                app:layout_constraintTop_toTopOf="@+id/textView15"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <Spinner
+                android:id="@+id/my_spinner"
+                android:layout_width="231dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="48dp"
+
+                app:layout_constraintBottom_toBottomOf="@+id/textView16"
+                app:layout_constraintStart_toEndOf="@+id/textView16"
+                app:layout_constraintTop_toTopOf="@+id/textView16"
+                app:layout_constraintVertical_bias="0.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
