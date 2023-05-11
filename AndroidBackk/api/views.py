@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, APIView
 from rest_framework.response import Response
 from rest_framework import generics
 from .models import *
-from .serializers import ProductSerializer, CategorySerializer, CommentSerializer, OrderSerializer, UserSerializer
+from .serializers import ProductSerializer, CategorySerializer, CommentSerializer, OrderSerializer, UserSerializer, RatingSerializer
 from django.http import JsonResponse
 # Create your views here.
 
@@ -27,6 +27,18 @@ def list_of_categories(request):
         categories = Category.objects.all()
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
+
+@api_view(['GET', 'POST'])
+def product_ratings(request):
+    if request.method == 'GET':
+        ratings = Rating.objects.all()
+        serializer = RatingSerializer(ratings, many=True)
+        return Response(serializer.data)
+    if request.method == 'POST':
+        serializer = RatingSerializer(data=request.data)
+        if serializer.is_valid():  # only when data ?= data. in the create method we are providing only data
+            serializer.save()
+            return Response(serializer.data)
 
 
 @api_view(['GET', 'POST'])
