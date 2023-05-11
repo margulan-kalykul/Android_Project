@@ -47,7 +47,6 @@ class BasketActivity : AppCompatActivity(), FragmentListener {
         }
         binding.btnBuy.setOnClickListener {
             val intent = Intent(this, BuyPageActivity::class.java)
-            Log.i("summ", total.toString())
             intent.putExtra("sum", total)
             launcher.launch(intent)
         }

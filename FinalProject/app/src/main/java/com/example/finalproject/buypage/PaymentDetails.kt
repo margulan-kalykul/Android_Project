@@ -18,7 +18,7 @@ class PaymentDetails : AppCompatActivity() {
             val jsonObject = JSONObject(intent.getStringExtra("details"))
             showDetails(jsonObject.getJSONObject("response"), intent.getDoubleExtra("sum", 0.0))
         }catch (e: Exception) {
-
+            e.printStackTrace()
         }
     }
 
@@ -27,7 +27,7 @@ class PaymentDetails : AppCompatActivity() {
             binding.apply {
                 textID.text = response.getString("id")
                 textStatus.text = response.getString("state")
-                textSum.text = response.getString(String.format("$%s", sum.toString()))
+                textSum.text = sum.toString() + "$"
             }
         }catch (e: JSONException) {
             e.printStackTrace()
