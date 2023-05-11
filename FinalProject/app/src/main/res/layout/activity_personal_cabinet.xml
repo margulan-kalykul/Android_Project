@@ -236,7 +236,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Password:"
+                            android:text="Add Product:"
                             android:textColor="#0F7015"
 
                             android:textSize="18sp"/>
@@ -246,7 +246,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Change"
+                            android:text="ADD"
                             android:textAlignment="textEnd"
                             android:textColor="#5b5b5b"
                             android:textSize="16sp" />
