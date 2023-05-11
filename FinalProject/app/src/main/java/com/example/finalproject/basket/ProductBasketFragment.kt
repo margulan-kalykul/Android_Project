@@ -43,7 +43,7 @@ class ProductBasketFragment : Fragment(), BasketAdapter.Listener {
 //        adapter.addProduct(ProductBasket(1, "YES", "NO", 124.25, R.drawable.logo, 2))
 //        adapter.addProduct(ProductBasket(2, "NO", "YES", 124.35, R.drawable.logo))
         userID = arguments?.getInt("userID")!!
-//        username = arguments?.getString("username")!!
+        username = arguments?.getString("username")!!
         CoroutineScope(Dispatchers.Main).launch {
             if(userID != null) {
                 val products = itemAPI.getCartProducts(userID)
@@ -68,7 +68,7 @@ class ProductBasketFragment : Fragment(), BasketAdapter.Listener {
 
     override fun onClick(product: ProductBasket) {
         val intent = Intent(context, Product::class.java)
-//        intent.putExtra("userName", username)
+        intent.putExtra("userName", username)
         intent.putExtra("productId", product.id)
         startActivity(intent)
         requireActivity().finish()
