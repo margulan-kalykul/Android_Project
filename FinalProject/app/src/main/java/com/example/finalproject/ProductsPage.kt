@@ -11,11 +11,15 @@ import com.example.finalproject.service.ServerAPI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
 
 
 class ProductsPage : AppCompatActivity() {
     lateinit var binding: ActivityProductPageBinding
-
+    val client = OkHttpClient.Builder().build()
+    val retrofit = RetrofitHelper(client)
+    val rf = retrofit.getInstance()
+    val itemAPI = rf.create(ServerAPI::class.java)
     private lateinit var listViewAdapter : ExpandableListViewAdapter
     private lateinit var chapterList : List<String>
     private lateinit var topicList : HashMap<String, List<String>>
@@ -24,6 +28,10 @@ class ProductsPage : AppCompatActivity() {
         binding = ActivityProductPageBinding.inflate(layoutInflater)
         val products_page = binding.root
         setContentView(products_page)
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = itemAPI.getProducts()
+            Log.d("data", call.toString())
+        }
         showList()
 
         listViewAdapter = ExpandableListViewAdapter(this, chapterList, topicList)
@@ -85,4 +93,5 @@ class ProductsPage : AppCompatActivity() {
                 else -> super.onOptionsItemSelected(item)
             }
         }
+
 }
