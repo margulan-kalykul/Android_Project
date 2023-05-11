@@ -84,6 +84,10 @@ class Product : AppCompatActivity() {
             }
         }
 
+        binding.btnAddCart.setOnClickListener {
+
+        }
+
         binding.button.setOnClickListener {
             val text = binding.commentFiled.text.toString()
             CoroutineScope(Dispatchers.IO).launch {
