@@ -29,16 +29,42 @@ def list_of_categories(request):
         return Response(serializer.data)
 
 @api_view(['GET', 'POST'])
-def product_ratings(request):
+def product_ratings(request, productId):
+    try:
+        product = Product.objects.get(id=productId)
+    except Product.DoesNotExist as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
     if request.method == 'GET':
-        ratings = Rating.objects.all()
+        ratings = product.rating.all()
         serializer = RatingSerializer(ratings, many=True)
         return Response(serializer.data)
     if request.method == 'POST':
+
         serializer = RatingSerializer(data=request.data)
         if serializer.is_valid():  # only when data ?= data. in the create method we are providing only data
-            serializer.save()
+            serializer.save(product=product)
             return Response(serializer.data)
+@api_view(['GET', 'PUT'])
+def change_rating_for_user(request, productId, userId):
+    try:
+        product = Product.objects.get(id=productId)
+    except Product.DoesNotExist as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == 'GET':
+        ratings = Rating.objects.filter(user__id=userId, product__id=productId)
+        serializer = RatingSerializer(ratings, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'PUT':
+        ratings = Rating.objects.filter(user__id=userId, product__id=productId)
+        serializer = RatingSerializer(instance=ratings, data=request.data)
+        print(request.data)
+        if serializer.is_valid():  # only when data ?= data. in the create method we are providing only data
+            serializer.save(product=product)
+            return Response(serializer.data)
+
 
 
 @api_view(['GET', 'POST'])

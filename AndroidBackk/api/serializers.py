@@ -12,12 +12,7 @@ class ProductSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 
-class RatingSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = Rating
-        fields = '__all__'
-        read_only_fields = ('id', 'product', )
 
 class CategorySerializer(serializers.ModelSerializer):
 
@@ -62,3 +57,10 @@ class UserSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+
+
+class RatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rating
+        fields = '__all__'
+        read_only_fields = ('id', 'product')

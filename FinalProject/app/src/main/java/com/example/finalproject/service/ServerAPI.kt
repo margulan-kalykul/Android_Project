@@ -26,6 +26,8 @@ interface ServerAPI {
 
     @GET("cart/{userId}")
     suspend fun getCartProducts(@Path("userId") userId: Int): List<ProductsInCart>
+    @POST("cart/{userId}")
+    suspend fun postCartProducts(@Path("userId") userId: Int, @Body product: ProductsInCart) //(1,
     @DELETE("cart/{userId}/{productId}/")
     suspend fun deleteProductFromCart(@Path("userId") userId: Int, @Path("productId") productId: Int)
 
