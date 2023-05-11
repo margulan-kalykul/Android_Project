@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import com.example.finalproject.interfaces.Product as PrInterface
 import com.example.finalproject.interfaces.Category
-import kotlinx.coroutines.async
+import com.example.finalproject.interfaces.SearchResult
 
 
 class ProductsPage : AppCompatActivity() {
@@ -40,42 +40,61 @@ class ProductsPage : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             val call = itemAPI.getProducts()
             val category = itemAPI.getCategories()
-            binding.sv.setOnQueryTextListener(object: OnQueryTextListener{
+            binding.sv.setOnQueryTextListener(object : OnQueryTextListener{
                 override fun onQueryTextSubmit(text: String?): Boolean {
                     CoroutineScope(Dispatchers.IO).launch {
-                        val list = text?.let { itemAPI.getProductsByName(it) }
+//                        Log.d("text", text.toString())
+                        val list: SearchResult =
+                            text?.let { itemAPI.getProductsByName(it) } ?: return@launch
                         runOnUiThread {
                             binding.apply {
                                 chapterList = ArrayList()
                                 topicList = HashMap()
-                                for (item in category.indices){
-                                    (chapterList as ArrayList<String>).add(category[item].name)
-                                    val topic : MutableList<PrInterface> = ArrayList()
-                                    for(prod in call){
-
-                                        if(prod.category.toInt() == category[item].id){
-                                            topic.add(prod)
-                                        }
+                                //      (chapterList as ArrayList<String>).add(call[0].name)
+                                //     (chapterList as ArrayList<String>).add(call[1].name)
+                                //     (chapterList as ArrayList<String>).add(call[2].name)
+                                //    (chapterList as ArrayList<String>).add(call[3].name)
+                                //     (chapterList as ArrayList<String>).add(call[4].name)
+                                for (item in 0 until 2){
+                                    if (1 == item) {
+                                        (chapterList as ArrayList<String>).add("Book")
                                     }
+                                    else {
+                                        (chapterList as ArrayList<String>).add("Pencil")
+                                    }
+                                    val topic : MutableList<PrInterface> = ArrayList()
+                                    for (prod in list.results) {
+                                        println(prod.category)
+//                                        if (prod.category == call[item].category) {
+//                                            Log.d("check", "entered")
+//                                            topic.add(prod)
+//                                        }
+                                    }
+                                    Log.d("check2", topic.toString())
                                     topicList[chapterList[item]] = topic
                                 }
+                                listViewAdapter = ExpandableListViewAdapter(this@ProductsPage, chapterList, topicList, userId, userName)
+                                Log.d("tuopics", topicList.toString())
+                                val eListView = binding.eListView
+                                eListView.setAdapter(listViewAdapter)
                             }
                         }
                     }
                     return true
                 }
 
-                override fun onQueryTextChange(p0: String?): Boolean {
+                override fun onQueryTextChange(text: String?): Boolean {
                     return true
                 }
-
             })
-            showList(call, category)
 
-            listViewAdapter = ExpandableListViewAdapter(this@ProductsPage, chapterList, topicList, userId, userName)
-            Log.d("tuopics", topicList.toString())
-            val eListView = binding.eListView
-            eListView.setAdapter(listViewAdapter)
+
+//            showList(call, category)
+//
+//            listViewAdapter = ExpandableListViewAdapter(this@ProductsPage, chapterList, topicList, userId, userName)
+//            Log.d("tuopics", topicList.toString())
+//            val eListView = binding.eListView
+//            eListView.setAdapter(listViewAdapter)
         }
 
 //        CoroutineScope(Dispatchers.Main).launch {
@@ -87,11 +106,11 @@ class ProductsPage : AppCompatActivity() {
         Log.d("call:" , call.toString())
         chapterList = ArrayList()
         topicList = HashMap()
-  //      (chapterList as ArrayList<String>).add(call[0].name)
-   //     (chapterList as ArrayList<String>).add(call[1].name)
-   //     (chapterList as ArrayList<String>).add(call[2].name)
-   //    (chapterList as ArrayList<String>).add(call[3].name)
-   //     (chapterList as ArrayList<String>).add(call[4].name)
+        //      (chapterList as ArrayList<String>).add(call[0].name)
+        //     (chapterList as ArrayList<String>).add(call[1].name)
+        //     (chapterList as ArrayList<String>).add(call[2].name)
+        //    (chapterList as ArrayList<String>).add(call[3].name)
+        //     (chapterList as ArrayList<String>).add(call[4].name)
         for (item in category.indices){
             (chapterList as ArrayList<String>).add(category[item].name)
             val topic : MutableList<PrInterface> = ArrayList()
@@ -130,17 +149,17 @@ class ProductsPage : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-            menuInflater.inflate(R.menu.menu_products_page, menu)
-            return true
-        }
-        override fun onOptionsItemSelected(item: MenuItem): Boolean {
-            return when (item.itemId) {
-                R.id.action_settings -> {
-                    // Handle settings backButton click
-                    true
-                }
-                else -> super.onOptionsItemSelected(item)
+        menuInflater.inflate(R.menu.menu_products_page, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                // Handle settings backButton click
+                true
             }
+            else -> super.onOptionsItemSelected(item)
         }
+    }
 
 }
