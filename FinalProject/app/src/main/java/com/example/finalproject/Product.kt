@@ -4,8 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -30,9 +32,11 @@ class Product : AppCompatActivity() {
         val productLayout = binding.root
         setContentView(productLayout)
 
+        // Setup at the start
         var productId = intent.extras?.getInt("id")
         if (productId == null)
             productId = 1
+        binding.commentFiled.clearFocus()
 
         binding.backButton.setOnClickListener {
             finish()
@@ -43,6 +47,10 @@ class Product : AppCompatActivity() {
 //            val rating = binding.ratingBar.rating
 //            Toast.makeText(applicationContext, rating.toString(), Toast.LENGTH_SHORT).show()
 //        }
+
+        binding.addButton.setOnClickListener {
+
+        }
 
         val client = OkHttpClient.Builder().build()
         val retrofit = RetrofitHelper(client)
@@ -64,6 +72,23 @@ class Product : AppCompatActivity() {
 
         comments.observe(this, Observer {
             binding.commentList.adapter = ArrayAdapter(applicationContext, android.R.layout.simple_list_item_1, it)
+            changeListHeight(binding.commentList)
         })
+    }
+
+    private fun changeListHeight(listView: ListView) {
+        var height = 0
+        val adapter = listView.adapter
+
+        for (i in 0 until adapter.count) {
+            val comment = adapter.getView(i, null, listView)
+            comment.measure(0, 0)
+            height += comment.measuredHeight
+        }
+        Log.d("height", height.toString())
+
+        val layoutParams = listView.layoutParams
+        layoutParams.height = height + (listView.dividerHeight * (adapter.count - 1))
+        listView.layoutParams = layoutParams
     }
 }

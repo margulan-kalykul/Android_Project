@@ -35,16 +35,16 @@
             app:layout_constraintStart_toEndOf="@+id/backButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:id="@+id/productPage"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topBar">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -59,7 +59,7 @@
                 <ImageView
                     android:id="@+id/productImage"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="220dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="ContentDescription"
@@ -80,7 +80,7 @@
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
                 android:contentDescription="@string/rating_bar" />
 
             <ImageButton
@@ -88,7 +88,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
                 android:contentDescription="@string/placeholder_text"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/add" />
@@ -114,15 +114,17 @@
             <ListView
                 android:id="@+id/commentList"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"
                 android:layout_marginTop="16dp"
+                android:scrollbars="none"
                 android:contentDescription="@string/placeholder_text">
 
 
             </ListView>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
