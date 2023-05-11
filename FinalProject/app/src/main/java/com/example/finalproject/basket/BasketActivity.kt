@@ -24,7 +24,6 @@ class BasketActivity : AppCompatActivity(), FragmentListener {
     lateinit var binding: ActivityBasketBinding
     private val fragment = ProductBasketFragment.newInstance()
     private lateinit var launcher: ActivityResultLauncher<Intent>
-    
     private val client = OkHttpClient.Builder().build()
     private val retrofit = RetrofitHelper(client)
     private val rf = retrofit.getInstance()
@@ -36,7 +35,7 @@ class BasketActivity : AppCompatActivity(), FragmentListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportFragmentManager.beginTransaction()
             .replace(R.id.frameLayout, fragment).commit()
-
+        
         binding.btnClear.setOnClickListener {
             fragment.getCleared()
         }
