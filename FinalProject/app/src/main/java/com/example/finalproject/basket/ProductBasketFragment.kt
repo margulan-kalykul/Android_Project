@@ -2,6 +2,7 @@ package com.example.finalproject.basket
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -45,7 +46,7 @@ class ProductBasketFragment : Fragment(), BasketAdapter.Listener {
                 for(productID in products) productSet.add(productID.products)
                 for(productID in productSet) {
                     val product = itemAPI.getProduct(productID)
-                    val productBasket = ProductBasket(product.id, product.name, product.description, product.price.toDouble(), R.drawable.logo)
+                    val productBasket = ProductBasket(product.id, product.name, product.description, product.price.toDouble(), product.image)
                     adapter.addProduct(productBasket)
                 }
                 for(product in basket) sum += (product.price * product.count)
