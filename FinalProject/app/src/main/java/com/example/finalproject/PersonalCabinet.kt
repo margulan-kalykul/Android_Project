@@ -38,7 +38,7 @@ class PersonalCabinet : AppCompatActivity() {
             this.startActivity(intent)
         }
         binding.textView7.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, AddProduct::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             this.startActivity(intent)
         }
