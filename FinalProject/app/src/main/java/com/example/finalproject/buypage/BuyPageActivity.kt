@@ -22,7 +22,6 @@ import java.math.BigDecimal
 
 class BuyPageActivity : AppCompatActivity() {
     lateinit var binding: ActivityBuyPageBinding
-    private val PAYPAL_REQUEST_CODE = 7171
     private var config = PayPalConfiguration()
         .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
         .clientId(Config().CLIENT_ID)
@@ -36,10 +35,9 @@ class BuyPageActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         sum = intent.getDoubleExtra("sum", 0.0)
-        Log.i("sum", sum.toString())
         binding.totalSum.text = "К оплате " + sum.toString()
 
-        intent = Intent(this, PayPalService::class.java)
+        val intent = Intent(this, PayPalService::class.java)
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config)
         startService(intent)
 
@@ -58,6 +56,7 @@ class BuyPageActivity : AppCompatActivity() {
                     }catch (e: JSONException) {
                         e.printStackTrace()
                     }
+                    setResult(RESULT_OK)
                 }
             }else Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show()
         }
@@ -70,7 +69,7 @@ class BuyPageActivity : AppCompatActivity() {
 
     private fun processPayment() {
         val payPalPay = PayPalPayment(BigDecimal(sum), "USD", "Donate to FinalProject", PayPalPayment.PAYMENT_INTENT_SALE)
-        intent = Intent(this, PaymentActivity::class.java)
+        val intent = Intent(this, PaymentActivity::class.java)
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config)
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPay)
         launcher.launch(intent)
