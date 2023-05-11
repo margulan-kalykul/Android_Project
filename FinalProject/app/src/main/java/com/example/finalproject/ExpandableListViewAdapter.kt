@@ -1,14 +1,17 @@
 package com.example.finalproject
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
-
-class ExpandableListViewAdapter internal constructor(private val context: Context, private val chapterList: List<String>, private val topicsList: HashMap<String, List<String>>):
+import com.example.finalproject.basket.BasketActivity
+import com.example.finalproject.interfaces.Product as ProductInterface
+import com.example.finalproject.Product as ProductClass
+class ExpandableListViewAdapter internal constructor(private val context: Context, private val chapterList: List<String>, private val topicsList: HashMap<String, List<ProductInterface>>):
     BaseExpandableListAdapter() {
     override fun getGroupCount(): Int {
         return chapterList.size
@@ -40,7 +43,7 @@ class ExpandableListViewAdapter internal constructor(private val context: Contex
 
     override fun getGroupView(p0: Int, p1: Boolean, p2: View?, p3: ViewGroup?): View {
         var view = p2
-        val chapterTitle = getGroup(p0) as String
+        val chapterTitleClass = getGroup(p0) as String
 
         if(view == null){
             val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -48,7 +51,8 @@ class ExpandableListViewAdapter internal constructor(private val context: Contex
         }
         val chapterTv = view!!.findViewById<TextView>(R.id.chapter_tv)
 
-        chapterTv.text = chapterTitle
+        chapterTv.text = chapterTitleClass
+
         return view
     }
 
@@ -65,8 +69,9 @@ class ExpandableListViewAdapter internal constructor(private val context: Contex
 //
 //        topicTv.setText(topicTitle)
 //        return p3
-        val topicTitle = getChild(p0, p1) as String
-//        Log.d("topic", topicTitle)
+        val topicTitleClass = getChild(p0, p1) as ProductInterface
+
+        Log.d("topic", topicTitleClass.name)
         var view = p3
         if (view == null) {
 
@@ -80,7 +85,11 @@ class ExpandableListViewAdapter internal constructor(private val context: Contex
             return view
         }
 
-        topicTv.text = topicTitle
+        topicTv.text = topicTitleClass.name
+        topicTv.setOnClickListener {
+            goToNextActivity(topicTitleClass)
+            Log.d("id", topicTitleClass.id.toString())
+        }
         Log.d("topicTv", topicTv.text.toString())
 //        topicTv.setText(topicTitle)
 
@@ -89,6 +98,11 @@ class ExpandableListViewAdapter internal constructor(private val context: Contex
 
     override fun isChildSelectable(p0: Int, p1: Int): Boolean {
         return true
+    }
+    fun goToNextActivity(product: ProductInterface) {
+        val intent = Intent(context, ProductClass::class.java)
+        intent.putExtra("productId", product.id)
+        context.startActivity(intent)
     }
 
 }
