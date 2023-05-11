@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.finalproject.basket.BasketActivity
 import com.example.finalproject.databinding.ActivityLoginBinding
 import com.example.finalproject.databinding.ActivityPersonalCabinetBinding
 
@@ -42,7 +43,7 @@ class PersonalCabinet : AppCompatActivity() {
             this.startActivity(intent)
         }
         binding.cartButton.setOnClickListener {
-            val intent = Intent(this, ProductsPage::class.java)
+            val intent = Intent(this, BasketActivity::class.java)
             intent.putExtra("userId", userId)
             startActivity(intent)
         }
