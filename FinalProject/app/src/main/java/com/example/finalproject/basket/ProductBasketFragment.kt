@@ -37,7 +37,7 @@ class ProductBasketFragment : Fragment(), BasketAdapter.Listener {
 //        adapter.addProduct(ProductBasket(1, "YES", "NO", 124.25, R.drawable.logo, 2))
 //        adapter.addProduct(ProductBasket(2, "NO", "YES", 124.35, R.drawable.logo))
         val userID = arguments?.getInt("userID")
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             if(userID != null) {
                 val products = itemAPI.getCartProducts(userID)
                 val productSet = mutableSetOf<Int>()
@@ -45,7 +45,7 @@ class ProductBasketFragment : Fragment(), BasketAdapter.Listener {
                 for(productID in productSet) {
                     val product = itemAPI.getProduct(productID)
                     val productBasket = ProductBasket(product.id, product.name, product.description, product.price.toDouble(), R.drawable.logo)
-                    basket.add(productBasket)
+                    adapter.addProduct(productBasket)
                 }
                 for(product in basket) sum += (product.price * product.count)
                 sendDataToActivity()
