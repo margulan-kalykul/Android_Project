@@ -9,6 +9,8 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('products/', list_of_products),
     path('product/<int:id>/commentaries/', comments_by_product),
+    path('product/<int:productId>/commentaries/<int:userId>/', get_comment_of_a_user),
+    path('commentary/<int:commentId>/delete/', delete_comment_of_a_user),
     path('product/<int:id>/', product_by_id),
 
     path('categories/', list_of_categories),
