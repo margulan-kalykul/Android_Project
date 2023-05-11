@@ -36,6 +36,11 @@ class PersonalCabinet : AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             this.startActivity(intent)
         }
+        binding.textView7.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            this.startActivity(intent)
+        }
     }
 
     private fun setContents(username: String?, email: String?){
