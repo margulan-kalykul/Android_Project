@@ -66,19 +66,23 @@ class ExpandableListViewAdapter internal constructor(private val context: Contex
 //        topicTv.setText(topicTitle)
 //        return p3
         val topicTitle = getChild(p0, p1) as String
-
+//        Log.d("topic", topicTitle)
         var view = p3
         if (view == null) {
+
             val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             view = inflater.inflate(R.layout.topics_list, null)
         }
 
-        val topicTv = view?.findViewById<TextView>(R.id.chapter_tv)
+        val topicTv = view?.findViewById<TextView>(R.id.topics_tv)
         if (topicTv == null) {
+            Log.d("topic", "hello world")
             return view
         }
 
         topicTv.text = topicTitle
+        Log.d("topicTv", topicTv.text.toString())
+//        topicTv.setText(topicTitle)
 
         return view
     }
