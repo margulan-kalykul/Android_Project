@@ -23,14 +23,12 @@ interface ServerAPI {
     suspend fun postProductComments(@Path("id") id: Int, @Body comment: UserComment): Comment
     @GET("product/{id}/")
     suspend fun getProduct(@Path("id") id: Int): Product
-
     @GET("cart/{userId}/")
     suspend fun getCartProducts(@Path("userId") userId: Int): List<ProductsInCart>
     @POST("cart/{userId}/")
     suspend fun postCartProducts(@Path("userId") userId: Int, @Body product: ProductsInCart) //(1,
     @DELETE("cart/{userId}/{productId}/")
     suspend fun deleteProductFromCart(@Path("userId") userId: Int, @Path("productId") productId: Int)
-
     @POST("register/user/")
     suspend fun registerUser(@Body user: UserRegister): UserResponse
     @GET("categories/")
@@ -38,6 +36,7 @@ interface ServerAPI {
     @POST("token/")
     suspend fun postUserCredentials(
         @Body userCred: UserLogin): Token
+
     @GET("products/search/")
     suspend fun getProductsByName(@Query("q") name: String): SearchResult
 
@@ -49,6 +48,7 @@ interface ServerAPI {
 
     @GET("rating/{productId}/")
     suspend fun getRatingsOfAProduct(@Path("productId") productId: Int): List<Rating>
+
     @PUT("rating/{productId}/")
-    suspend fun changeRatingsOfAProduct(@Path("productId") productId: Int, @Body ratingChange: RatingChange): List<Rating>
+    suspend fun changeRatingsOfAProduct(@Path("productId") productId: Int, @Body ratingChange: RatingChange)
 }

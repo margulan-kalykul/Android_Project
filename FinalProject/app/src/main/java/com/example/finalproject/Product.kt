@@ -33,6 +33,7 @@ import java.lang.Exception
 class Product : AppCompatActivity() {
     lateinit var binding: ActivityProductBinding
     var comments = MutableLiveData<List<String>>()
+    var clicked = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductBinding.inflate(layoutInflater)
@@ -41,7 +42,7 @@ class Product : AppCompatActivity() {
 
         // Setup at the start
         val productId = intent.getIntExtra("productId", 1)
-        val userId = intent.getIntExtra("userId", 1)
+        val userId = intent.getIntExtra("userId", 2)
         val userName = intent.getStringExtra("userName")?:""
         val client = OkHttpClient.Builder().build()
         val retrofit = RetrofitHelper(client)
@@ -64,13 +65,14 @@ class Product : AppCompatActivity() {
 //        }
 
         CoroutineScope(Dispatchers.Main).launch {
-            var clicked = false
+
             var avg = 0.0
             var sum = 0.0
             val product = itemAPI.getProduct(productId)
-            val ratings = itemAPI.getRatingsOfAProduct(productId)
+            var ratings = itemAPI.getRatingsOfAProduct(productId)
             for(rating in ratings) sum += rating.rating
             if(ratings.isNotEmpty()) avg = sum / ratings.size
+            Log.d("avg1", avg.toString())
             val image = product.image
             val name = product.name
             binding.apply {
@@ -89,17 +91,39 @@ class Product : AppCompatActivity() {
                 })
                 productName.text = name
                 ratingBar.rating = avg.toFloat()
-                ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-                    CoroutineScope(Dispatchers.IO).launch {
-                        itemAPI.changeRatingsOfAProduct(productId, RatingChange(userId, rating))
-                        var avg = 0.0
-                        var sum = 0.0
-                        val ratings = itemAPI.getRatingsOfAProduct(productId)
-                        for(rating in ratings) sum += rating.rating
-                        if(ratings.isNotEmpty()) avg = sum / ratings.size
-                        ratingBar.rating = avg.toFloat()
-                    }
-                }
+//                ratingBar.setOnRatingBarChangeListener { _, rate, _ ->
+//                    CoroutineScope(Dispatchers.IO).launch {
+//                        itemAPI.changeRatingsOfAProduct(productId, RatingChange(userId, rate))
+//                        avg = 0.0
+//                        sum = 0.0
+//                        Log.d("data", rate.toString())
+//                        ratings = itemAPI.getRatingsOfAProduct(productId)
+//                        for(rating in ratings) sum += rating.rating
+//                        if(ratings.isNotEmpty()) avg = sum / ratings.size
+//                        Log.d("avg", avg.toString())
+//                        ratingBar.rating = avg.toFloat()
+//                    }
+//                }
+            }
+
+        }
+        val ratingBar = binding.ratingBar
+        ratingBar.setOnRatingBarChangeListener { _, rate, _ ->
+            if(clicked){
+                clicked = false
+                return@setOnRatingBarChangeListener
+            }
+            CoroutineScope(Dispatchers.IO).launch {
+                itemAPI.changeRatingsOfAProduct(productId, RatingChange(userId, rate))
+                var avg = 0.0
+                var sum = 0.0
+                Log.d("data", rate.toString())
+                var ratings = itemAPI.getRatingsOfAProduct(productId)
+                for(rating in ratings) sum += rating.rating
+                if(ratings.isNotEmpty()) avg = sum / ratings.size
+                Log.d("avg", avg.toString())
+                ratingBar.rating = avg.toFloat()
+                clicked = true
             }
         }
 
@@ -109,9 +133,7 @@ class Product : AppCompatActivity() {
             }
         }
 
-        binding.addButton.setOnClickListener {
 
-        }
 
         binding.button.setOnClickListener {
             val text = binding.commentFiled.text.toString()
