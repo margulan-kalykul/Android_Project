@@ -17,7 +17,7 @@ interface ServerAPI {
     suspend fun getProducts(): List<Product>
     @POST("products/")
     suspend fun postProducts(@Body product: Product): Product
-    @GET("product/{id}/commentaries")
+    @GET("product/{id}/commentaries/")
     suspend fun getProductComments(@Path("id") id: String?): List<Comment>
     @POST("product/{id}/commentaries/")
     suspend fun postProductComments(@Path("id") id: Int, @Body comment: UserComment): Comment
@@ -41,4 +41,9 @@ interface ServerAPI {
     @GET("products/")
     suspend fun getProductsByName(@Query("q") name: String): Product
 
+    @GET("product/{productId}/commentaries/{userId}/")
+    suspend fun getCommentsOfAUser(@Path("productId") productId: Int, @Path("userId") userId: Int): List<Comment>
+
+    @DELETE("commentary/{commentId}/delete/")
+    suspend fun deleteCommentaryOfAUser(@Path("commentId") commentId: Int): Deleted
 }

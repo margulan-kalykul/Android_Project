@@ -117,7 +117,7 @@ def delete_comment_of_a_user(request, commentId):
     if request.method == 'DELETE':
         comment = Commentary.objects.get(id=commentId)
         comment.delete()
-        return Response({"delete": "success"})
+        return Response({"deleted": "success"})
 
 
 @api_view(['GET'])
