@@ -41,6 +41,11 @@ class PersonalCabinet : AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             this.startActivity(intent)
         }
+        binding.cartButton.setOnClickListener {
+            val intent = Intent(this, ProductsPage::class.java)
+            intent.putExtra("userId", userId)
+            startActivity(intent)
+        }
     }
 
     private fun setContents(username: String?, email: String?){
