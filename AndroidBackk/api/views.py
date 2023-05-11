@@ -41,7 +41,6 @@ def product_ratings(request, productId):
         ratings = product.rating.all()
         serializer = RatingSerializer(ratings, many=True)
         return Response(serializer.data)
-
     try:
         if request.method == 'PUT':
             print(request.data.get('user'))

@@ -62,11 +62,6 @@ class Product : AppCompatActivity() {
 //            Toast.makeText(applicationContext, rating.toString(), Toast.LENGTH_SHORT).show()
 //        }
 
-        val client = OkHttpClient.Builder().build()
-        val retrofit = RetrofitHelper(client)
-        val rf = retrofit.getInstance()
-        val itemAPI = rf.create(ServerAPI::class.java)
-
         CoroutineScope(Dispatchers.Main).launch {
             val product = itemAPI.getProduct(productId)
             val image = product.image
