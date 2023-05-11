@@ -63,7 +63,12 @@ class Product : AppCompatActivity() {
 //        }
 
         CoroutineScope(Dispatchers.Main).launch {
+            var avg = 0.0
+            var sum = 0
             val product = itemAPI.getProduct(productId)
+//            val ratings = itemAPI.getRating(productId)
+//            for(rating in ratings) sum += rating.rating
+//            if(ratings.size > 0) avg = sum.toDouble() / ratings.size
             val image = product.image
             val name = product.name
             binding.apply {
@@ -81,15 +86,18 @@ class Product : AppCompatActivity() {
                     }
                 })
                 productName.text = name
+                ratingBar.rating = avg.toFloat()
             }
         }
 
         binding.btnAddCart.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-
                 itemAPI.postCartProducts(userId, ProductsInCart(productId))
-
             }
+        }
+
+        binding.addButton.setOnClickListener {
+
         }
 
         binding.button.setOnClickListener {
