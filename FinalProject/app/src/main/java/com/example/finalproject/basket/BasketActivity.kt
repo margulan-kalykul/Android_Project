@@ -32,8 +32,10 @@ class BasketActivity : AppCompatActivity(), FragmentListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val userID = intent.getIntExtra("userId", 1)
+//        val username = intent.getStringExtra("userName")
         val bundle = Bundle()
         bundle.putInt("userID", userID)
+//        bundle.putString("username", username)
         fragment.arguments = bundle
 
         supportFragmentManager.beginTransaction()

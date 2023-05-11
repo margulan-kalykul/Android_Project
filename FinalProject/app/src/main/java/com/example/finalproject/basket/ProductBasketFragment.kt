@@ -1,6 +1,7 @@
 package com.example.finalproject.basket
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.finalproject.Product
 import com.example.finalproject.R
 import com.example.finalproject.databinding.FragmentProductBasketBinding
 import com.example.finalproject.retrofit.RetrofitHelper
@@ -22,6 +24,8 @@ class ProductBasketFragment : Fragment(), BasketAdapter.Listener {
     private var adapter = BasketAdapter(this)
     private var listener: FragmentListener? = null
     private var sum: Double = 0.0
+    private var userID: Int = 1
+    private var username: String = ""
 
     private val client = OkHttpClient.Builder().build()
     private val retrofit = RetrofitHelper(client)
@@ -38,7 +42,8 @@ class ProductBasketFragment : Fragment(), BasketAdapter.Listener {
         basket.clear()
 //        adapter.addProduct(ProductBasket(1, "YES", "NO", 124.25, R.drawable.logo, 2))
 //        adapter.addProduct(ProductBasket(2, "NO", "YES", 124.35, R.drawable.logo))
-        val userID = arguments?.getInt("userID")
+        userID = arguments?.getInt("userID")!!
+//        username = arguments?.getString("username")!!
         CoroutineScope(Dispatchers.Main).launch {
             if(userID != null) {
                 val products = itemAPI.getCartProducts(userID)
@@ -62,11 +67,18 @@ class ProductBasketFragment : Fragment(), BasketAdapter.Listener {
     }
 
     override fun onClick(product: ProductBasket) {
-        return
+        val intent = Intent(context, Product::class.java)
+//        intent.putExtra("userName", username)
+        intent.putExtra("productId", product.id)
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     override fun onDelete(product: ProductBasket) {
         adapter.deleteProduct(product)
+        CoroutineScope(Dispatchers.Main).launch {
+            itemAPI.deleteProductFromCart(userID, product.id)
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -85,7 +97,10 @@ class ProductBasketFragment : Fragment(), BasketAdapter.Listener {
     }
 
     fun getCleared() {
-        adapter.clearProduct()
-        onUpdate()
+        CoroutineScope(Dispatchers.Main).launch {
+            for(product in basket) itemAPI.deleteProductFromCart(userID, product.id)
+            adapter.clearProduct()
+            onUpdate()
+        }
     }
 }
