@@ -19,6 +19,7 @@ import com.example.finalproject.databinding.ActivityProductBinding
 import com.example.finalproject.interfaces.Comment
 import com.example.finalproject.interfaces.ProductsInCart
 import com.example.finalproject.interfaces.UserComment
+import com.example.finalproject.rating.RatingChange
 import com.example.finalproject.retrofit.RetrofitHelper
 import com.example.finalproject.service.ServerAPI
 import com.squareup.picasso.Picasso
@@ -63,12 +64,13 @@ class Product : AppCompatActivity() {
 //        }
 
         CoroutineScope(Dispatchers.Main).launch {
+            var clicked = false
             var avg = 0.0
-            var sum = 0
+            var sum = 0.0
             val product = itemAPI.getProduct(productId)
-//            val ratings = itemAPI.getRating(productId)
-//            for(rating in ratings) sum += rating.rating
-//            if(ratings.size > 0) avg = sum.toDouble() / ratings.size
+            val ratings = itemAPI.getRatingsOfAProduct(productId)
+            for(rating in ratings) sum += rating.rating
+            if(ratings.isNotEmpty()) avg = sum / ratings.size
             val image = product.image
             val name = product.name
             binding.apply {
@@ -87,6 +89,17 @@ class Product : AppCompatActivity() {
                 })
                 productName.text = name
                 ratingBar.rating = avg.toFloat()
+                ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        itemAPI.changeRatingsOfAProduct(productId, RatingChange(userId, rating))
+                        var avg = 0.0
+                        var sum = 0.0
+                        val ratings = itemAPI.getRatingsOfAProduct(productId)
+                        for(rating in ratings) sum += rating.rating
+                        if(ratings.isNotEmpty()) avg = sum / ratings.size
+                        ratingBar.rating = avg.toFloat()
+                    }
+                }
             }
         }
 
