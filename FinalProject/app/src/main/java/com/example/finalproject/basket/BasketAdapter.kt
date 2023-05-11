@@ -1,11 +1,21 @@
 package com.example.finalproject.basket
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.finalproject.R
 import com.example.finalproject.databinding.BasketProductBinding
+import com.squareup.picasso.Picasso
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import java.lang.Exception
+import kotlin.coroutines.coroutineContext
 import kotlin.math.roundToInt
 
 class BasketAdapter(val listener: Listener): RecyclerView.Adapter<BasketAdapter.BasketHolder>() {
@@ -23,7 +33,18 @@ class BasketAdapter(val listener: Listener): RecyclerView.Adapter<BasketAdapter.
             binding.apply {
                 productID.text = id
                 productName.text = name
-                productImage.setImageResource(image)
+                Picasso.get().load(image).into(object: com.squareup.picasso.Target {
+                    override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                        productImage.setImageBitmap(bitmap)
+                    }
+                    override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+                        productImage.setImageResource(R.drawable.logo)
+                    }
+
+                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+                        
+                    }
+                })
                 productPrice.text = ((price * count * 100).roundToInt() / 100.0).toString()
                 productCount.text = count.toString()
                 btnPlus.setOnClickListener {
