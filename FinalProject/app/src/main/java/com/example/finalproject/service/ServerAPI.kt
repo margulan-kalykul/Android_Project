@@ -1,13 +1,8 @@
 package com.example.finalproject.service
 
-import com.example.finalproject.interfaces.Category
-import com.example.finalproject.interfaces.Product
-import com.example.finalproject.interfaces.UserRegister
-import com.example.finalproject.interfaces.UserResponse
+import com.example.finalproject.interfaces.*
 import okhttp3.ResponseBody
 import retrofit2.Response
-import com.example.finalproject.interfaces.Token
-import com.example.finalproject.interfaces.UserLogin
 import com.example.finalproject.interfaces.users.UserEmail
 import com.example.finalproject.interfaces.users.UserId
 import retrofit2.Call
@@ -20,6 +15,8 @@ interface ServerAPI {
     suspend fun getUserEmail(@Path("username") userName: String?): UserEmail
     @GET("products/")
     suspend fun getProducts(): List<Product>
+    @GET("product/{id}/commentaries")
+    suspend fun getProductComments(@Path("id") id: String?): List<Comment>
 
     @POST("register/user/")
     suspend fun registerUser(@Body user: UserRegister): UserResponse

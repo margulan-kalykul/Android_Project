@@ -35,64 +35,94 @@
             app:layout_constraintStart_toEndOf="@+id/backButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/imageField"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="20dp"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/productPage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topBar">
 
-        <ImageView
-            android:id="@+id/productImage"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="ContentDescription"
-            tools:layout_editor_absoluteY="108dp"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:paddingBottom="20dp">
 
-    <TextView
-        android:id="@+id/productName"
-        android:layout_width="337dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="37dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="37dp"
-        android:text="@string/product_name"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageField" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/imageField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:contentDescription="@string/rating_bar"
-        app:layout_constraintStart_toStartOf="@+id/productName"
-        app:layout_constraintTop_toBottomOf="@+id/productName" />
+                <ImageView
+                    android:id="@+id/productImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription"
+                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="57dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
-        app:layout_constraintDimensionRatio="h,1:1"
-        app:layout_constraintEnd_toEndOf="@+id/productName"
-        app:layout_constraintStart_toEndOf="@+id/ratingBar"
-        app:layout_constraintTop_toBottomOf="@+id/productName"
-        app:srcCompat="@drawable/cart_icon" />
+            <TextView
+                android:id="@+id/productName"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:text="@string/product_name"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/rating_bar" />
+
+            <ImageButton
+                android:id="@+id/addButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/placeholder_text"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/add" />
+
+            <EditText
+                android:id="@+id/commentFiled"
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:layout_marginTop="14dp"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="@string/write_your_comment"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:text="@string/add" />
+
+            <ListView
+                android:id="@+id/commentList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/placeholder_text">
+
+
+            </ListView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
