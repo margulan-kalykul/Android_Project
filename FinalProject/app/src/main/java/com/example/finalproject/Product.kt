@@ -37,6 +37,10 @@ class Product : AppCompatActivity() {
         val productId = intent.getIntExtra("productId", 1)
         val userId = intent.getIntExtra("userId", 1)
         val userName = intent.getStringExtra("userName")?:""
+        val client = OkHttpClient.Builder().build()
+        val retrofit = RetrofitHelper(client)
+        val rf = retrofit.getInstance()
+        val itemAPI = rf.create(ServerAPI::class.java)
 
         Log.d("productId:", productId.toString())
         Log.d("username:", userName)
@@ -53,26 +57,30 @@ class Product : AppCompatActivity() {
 //            Toast.makeText(applicationContext, rating.toString(), Toast.LENGTH_SHORT).show()
 //        }
 
-
-
-        val client = OkHttpClient.Builder().build()
-        val retrofit = RetrofitHelper(client)
-        val rf = retrofit.getInstance()
-        val itemAPI = rf.create(ServerAPI::class.java)
-
         binding.button.setOnClickListener {
             val text = binding.commentFiled.text.toString()
             CoroutineScope(Dispatchers.IO).launch {
-
                 val comment = UserComment(userName, text)
                 Log.d("comment:", comment.toString())
                 val postComment = itemAPI.postProductComments(productId, comment)
                 Log.d("comment:", postComment.toString())
-                
+
+                withContext(Dispatchers.Main) {
+                    updateList(itemAPI, productId)
+                }
             }
         }
         Log.d("test", "got here")
 
+        updateList(itemAPI, productId)
+
+        comments.observe(this, Observer {
+            binding.commentList.adapter = ArrayAdapter(applicationContext, android.R.layout.simple_list_item_1, it)
+            changeListHeight(binding.commentList)
+        })
+    }
+
+    private fun updateList(itemAPI: ServerAPI, productId: Int) {
         lifecycleScope.launch(Dispatchers.IO) {
             val response: List<Comment> = itemAPI.getProductComments(productId.toString())
             withContext(Dispatchers.Main) {
@@ -83,11 +91,6 @@ class Product : AppCompatActivity() {
                 comments.value = commentString
             }
         }
-
-        comments.observe(this, Observer {
-            binding.commentList.adapter = ArrayAdapter(applicationContext, android.R.layout.simple_list_item_1, it)
-            changeListHeight(binding.commentList)
-        })
     }
 
     private fun changeListHeight(listView: ListView) {
