@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
@@ -41,6 +42,7 @@ class AddProduct : AppCompatActivity() {
         binding = ActivityAddProductBinding.inflate(layoutInflater)
         val addProductPage = binding.root
         setContentView(addProductPage)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         spinner = binding.mySpinner
         val productName = binding.editTextTextPersonName
@@ -76,7 +78,7 @@ class AddProduct : AppCompatActivity() {
                     val postt = itemAPI.postProducts(usersProduct)
                     val intent = Intent(applicationContext, ProductsPage::class.java)
                     startActivity(intent)
-                    finish()
+
                 }
             }
         }
@@ -112,5 +114,9 @@ class AddProduct : AppCompatActivity() {
 
     private fun showToast(context: Context, text: String) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == android.R.id.home) finish()
+        return true
     }
 }

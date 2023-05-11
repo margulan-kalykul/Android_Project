@@ -96,7 +96,7 @@ class Login : AppCompatActivity() {
     }
     private suspend fun getUserEmail(username: String): UserEmail {
         Log.d("dataEmail", this.itemAPI.getUserEmail(username).toString())
-        return this.itemAPI.getUserEmail(username)
+        return itemAPI.getUserEmail(username)
     }
     private fun putInStorage(id: Int, username: String, userEmail:String, token: Token){
         val sharedPreferences = this.getSharedPreferences("tokens", Context.MODE_PRIVATE)

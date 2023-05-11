@@ -11,7 +11,7 @@ import retrofit2.http.Query
 interface ServerAPI {
     @GET("user/{username}/")
     suspend fun getUser(@Path("username") userName: String?): UserId
-    @GET("user/email/{username}/")
+    @GET("user/email/{username}")
     suspend fun getUserEmail(@Path("username") userName: String?): UserEmail
     @GET("products/")
     suspend fun getProducts(): List<Product>
@@ -21,9 +21,9 @@ interface ServerAPI {
     suspend fun getProductComments(@Path("id") id: String?): List<Comment>
     @POST("product/{id}/commentaries/")
     suspend fun postProductComments(@Path("id") id: Int, @Body comment: UserComment): Comment
-    @GET("product/{id}/")
+    @GET("product/{id}")
     suspend fun getProduct(@Path("id") id: Int): Product
-    @GET("cart/{userId}/")
+    @GET("cart/{userId}")
     suspend fun getCartProducts(@Path("userId") userId: Int): List<ProductsInCart>
     @POST("cart/{userId}/")
     suspend fun postCartProducts(@Path("userId") userId: Int, @Body product: ProductsInCart) //(1,
@@ -40,13 +40,13 @@ interface ServerAPI {
     @GET("products/search/")
     suspend fun getProductsByName(@Query("q") name: String): SearchResult
 
-    @GET("product/{productId}/commentaries/{userId}/")
+    @GET("product/{productId}/commentaries/{userId}")
     suspend fun getCommentsOfAUser(@Path("productId") productId: Int, @Path("userId") userId: Int): List<Comment>
 
     @DELETE("commentary/{commentId}/delete/")
     suspend fun deleteCommentaryOfAUser(@Path("commentId") commentId: Int): Deleted
 
-    @GET("rating/{productId}/")
+    @GET("rating/{productId}")
     suspend fun getRatingsOfAProduct(@Path("productId") productId: Int): List<Rating>
 
     @PUT("rating/{productId}/")
