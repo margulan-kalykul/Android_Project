@@ -58,7 +58,7 @@ class BuyPageActivity : AppCompatActivity() {
                     }
                     setResult(RESULT_OK)
                 }
-            }else Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show()
+            }else Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.finalproject.databinding.ActivityProductBinding
 import com.example.finalproject.interfaces.Comment
+import com.example.finalproject.interfaces.UserComment
 import com.example.finalproject.retrofit.RetrofitHelper
 import com.example.finalproject.service.ServerAPI
 import kotlinx.coroutines.CoroutineScope
@@ -33,9 +34,13 @@ class Product : AppCompatActivity() {
         setContentView(productLayout)
 
         // Setup at the start
-        var productId = intent.extras?.getInt("productId")
-        if (productId == null)
-            productId = 1
+        val productId = intent.getIntExtra("productId", 1)
+        val userId = intent.getIntExtra("userId", 1)
+        val userName = intent.getStringExtra("userName")?:""
+
+        Log.d("productId:", productId.toString())
+        Log.d("username:", userName)
+
         binding.commentFiled.clearFocus()
 
         binding.backButton.setOnClickListener {
@@ -48,15 +53,24 @@ class Product : AppCompatActivity() {
 //            Toast.makeText(applicationContext, rating.toString(), Toast.LENGTH_SHORT).show()
 //        }
 
-        binding.addButton.setOnClickListener {
 
-        }
 
         val client = OkHttpClient.Builder().build()
         val retrofit = RetrofitHelper(client)
         val rf = retrofit.getInstance()
         val itemAPI = rf.create(ServerAPI::class.java)
 
+        binding.button.setOnClickListener {
+            val text = binding.commentFiled.text.toString()
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val comment = UserComment(userName, text)
+                Log.d("comment:", comment.toString())
+                val postComment = itemAPI.postProductComments(productId, comment)
+                Log.d("comment:", postComment.toString())
+                
+            }
+        }
         Log.d("test", "got here")
 
         lifecycleScope.launch(Dispatchers.IO) {

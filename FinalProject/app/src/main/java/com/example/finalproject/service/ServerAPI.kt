@@ -19,6 +19,8 @@ interface ServerAPI {
     suspend fun postProducts(@Body product: Product): Product
     @GET("product/{id}/commentaries")
     suspend fun getProductComments(@Path("id") id: String?): List<Comment>
+    @POST("product/{id}/commentaries/")
+    suspend fun postProductComments(@Path("id") id: Int, @Body comment: UserComment): Comment
     @GET("product/{id}")
     suspend fun getProduct(@Path("id") id: Int): Product
 

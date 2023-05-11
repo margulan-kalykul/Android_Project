@@ -31,13 +31,16 @@ class ProductsPage : AppCompatActivity() {
         binding = ActivityProductPageBinding.inflate(layoutInflater)
         val products_page = binding.root
         setContentView(products_page)
+
+        val userId = intent.getIntExtra("userId", 1)
+        val userName = intent.getStringExtra("userName")?:""
         CoroutineScope(Dispatchers.Main).launch {
             val call = itemAPI.getProducts()
             val category = itemAPI.getCategories()
 
             showList(call, category)
 
-            listViewAdapter = ExpandableListViewAdapter(this@ProductsPage, chapterList, topicList)
+            listViewAdapter = ExpandableListViewAdapter(this@ProductsPage, chapterList, topicList, userId, userName)
             Log.d("tuopics", topicList.toString())
             val eListView = binding.eListView
             eListView.setAdapter(listViewAdapter)

@@ -11,7 +11,10 @@ import android.widget.TextView
 import com.example.finalproject.basket.BasketActivity
 import com.example.finalproject.interfaces.Product as ProductInterface
 import com.example.finalproject.Product as ProductClass
-class ExpandableListViewAdapter internal constructor(private val context: Context, private val chapterList: List<String>, private val topicsList: HashMap<String, List<ProductInterface>>):
+class ExpandableListViewAdapter internal constructor(private val context: Context,
+                                                     private val chapterList: List<String>,
+                                                     private val topicsList: HashMap<String, List<ProductInterface>>, private val userId: Int,
+                                                     private val userName: String):
     BaseExpandableListAdapter() {
     override fun getGroupCount(): Int {
         return chapterList.size
@@ -102,6 +105,8 @@ class ExpandableListViewAdapter internal constructor(private val context: Contex
     fun goToNextActivity(product: ProductInterface) {
         val intent = Intent(context, ProductClass::class.java)
         intent.putExtra("productId", product.id)
+        intent.putExtra("userId", userId)
+        intent.putExtra("userName", userName)
         context.startActivity(intent)
     }
 

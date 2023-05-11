@@ -29,6 +29,7 @@ class PersonalCabinet : AppCompatActivity() {
         binding.productsButton.setOnClickListener {
             val intent = Intent(this, ProductsPage::class.java)
             intent.putExtra("userId", userId)
+            intent.putExtra("userName", userName)
             startActivity(intent)
         }
         binding.logOutButton.setOnClickListener {
@@ -45,6 +46,7 @@ class PersonalCabinet : AppCompatActivity() {
         binding.cartButton.setOnClickListener {
             val intent = Intent(this, BasketActivity::class.java)
             intent.putExtra("userId", userId)
+            intent.putExtra("userName", userName)
             startActivity(intent)
         }
     }
