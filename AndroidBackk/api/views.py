@@ -74,6 +74,18 @@ def list_of_orders_by_user(request, id):
             serializer.save(user=user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({"error": "Error posting order"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+@api_view(['DELETE'])
+def delete_product_from_order(request, productId, userId):
+    try:
+        user = User.objects.get(id=userId)
+    except User.DoesNotExist as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == 'DELETE':
+        asds = Order.objects.filter(user__id=userId, products__id=productId)
+        asds.delete()
+        return Response({"delete": "success"})
+
 
 class UserCreateView(generics.CreateAPIView):
     serializer_class = UserSerializer

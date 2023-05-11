@@ -15,12 +15,17 @@ interface ServerAPI {
     suspend fun getUserEmail(@Path("username") userName: String?): UserEmail
     @GET("products/")
     suspend fun getProducts(): List<Product>
+    @POST("products/")
+    suspend fun postProducts(@Body product: Product): Product
     @GET("product/{id}/commentaries")
     suspend fun getProductComments(@Path("id") id: String?): List<Comment>
     @GET("product/{id}")
     suspend fun getProduct(@Path("id") id: Int): Product
+
     @GET("cart/{userId}")
     suspend fun getCartProducts(@Path("userId") userId: Int): List<ProductsInCart>
+    @DELETE("cart/{userId}/{productId}/")
+    suspend fun deleteProductFromCart(@Path("userId") userId: Int, @Path("productId") productId: Int)
 
     @POST("register/user/")
     suspend fun registerUser(@Body user: UserRegister): UserResponse

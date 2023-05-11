@@ -8,9 +8,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.finalproject.R
+import com.example.finalproject.interfaces.Category
 
-class OptionAdapter(private val activity: Activity, private val options: List<Option>) :
-    ArrayAdapter<Option>(activity, R.layout.item_option, options) {
+class OptionAdapter(private val activity: Activity, private val options: List<Category>) :
+    ArrayAdapter<Category>(activity, R.layout.item_option, options) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
@@ -18,7 +19,7 @@ class OptionAdapter(private val activity: Activity, private val options: List<Op
 
         val option = getItem(position)
         val text = view.findViewById<TextView>(R.id.optionTV)
-        text.text = option?.text
+        text.text = option?.name
 
         return view
     }
