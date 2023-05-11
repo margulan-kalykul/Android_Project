@@ -23,6 +23,8 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
+    path('products/search', ProductSearchView.as_view()),
+
     path('user/<str:username>/', find_user_by_username),
     path('user/email/<str:username>', find_email_by_username),
 

@@ -7,6 +7,7 @@ import com.example.finalproject.interfaces.users.UserEmail
 import com.example.finalproject.interfaces.users.UserId
 import retrofit2.Call
 import retrofit2.http.*
+import retrofit2.http.Query
 
 interface ServerAPI {
     @GET("user/{username}")
@@ -38,8 +39,8 @@ interface ServerAPI {
     @POST("token/")
     suspend fun postUserCredentials(
         @Body userCred: UserLogin): Token
-    @GET("products/")
-    suspend fun getProductsByName(@Query("q") name: String): Product
+    @GET("products/search")
+    suspend fun getProductsByName(@Query("q") name: String): SearchResult
 
     @GET("product/{productId}/commentaries/{userId}/")
     suspend fun getCommentsOfAUser(@Path("productId") productId: Int, @Path("userId") userId: Int): List<Comment>

@@ -6,6 +6,8 @@ from rest_framework import generics
 from .models import *
 from .serializers import ProductSerializer, CategorySerializer, CommentSerializer, OrderSerializer, UserSerializer, RatingSerializer
 from django.http import JsonResponse
+
+from django.views.generic import View
 # Create your views here.
 
 @api_view(['GET', 'POST'])
@@ -193,3 +195,16 @@ def product_by_id(request, id):
     if request.method == 'GET':
         serializer = ProductSerializer(product)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ProductSearchView(View):
+    def get(self, request):
+        query = request.GET.get('q')
+        if not query:
+            return JsonResponse({'error': 'Please provide a query parameter'})
+
+        products = Product.objects.filter(name__icontains=query).values()
+
+        # Do any additional processing here
+
+        return JsonResponse({'results': list(products)})
