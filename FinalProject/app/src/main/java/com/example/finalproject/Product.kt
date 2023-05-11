@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.finalproject.databinding.ActivityProductBinding
 import com.example.finalproject.interfaces.Comment
+import com.example.finalproject.interfaces.ProductsInCart
 import com.example.finalproject.interfaces.UserComment
 import com.example.finalproject.retrofit.RetrofitHelper
 import com.example.finalproject.service.ServerAPI
@@ -85,7 +86,9 @@ class Product : AppCompatActivity() {
         }
 
         binding.btnAddCart.setOnClickListener {
-
+            CoroutineScope(Dispatchers.IO).launch {
+                itemAPI.postCartProducts(userId, ProductsInCart(productId))
+            }
         }
 
         binding.button.setOnClickListener {
