@@ -30,20 +30,63 @@ def list_of_categories(request):
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
 
-@api_view(['GET', 'POST'])
-def product_ratings(request):
+@api_view(['GET', 'PUT'])
+def product_ratings(request, productId):
+    try:
+        product = Product.objects.get(id=productId)
+    except Product.DoesNotExist as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
     if request.method == 'GET':
-        ratings = Rating.objects.all()
+        ratings = product.rating.all()
         serializer = RatingSerializer(ratings, many=True)
         return Response(serializer.data)
-    if request.method == 'POST':
+
+    try:
+        if request.method == 'PUT':
+            print(request.data.get('user'))
+            ratings = Rating.objects.get(user__id=request.data.get('user'), product__id=productId)
+            serializer = RatingSerializer(instance=ratings, data=request.data)
+            if serializer.is_valid():  # only when data ?= data. in the create method we are providing only data
+                serializer.save(product=product)
+                return Response(serializer.data)
+    except Rating.DoesNotExist as e:
         serializer = RatingSerializer(data=request.data)
         if serializer.is_valid():  # only when data ?= data. in the create method we are providing only data
-            serializer.save()
+            serializer.save(product=product)
             return Response(serializer.data)
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    # if request.method == 'PUT':
+    #     print(request.data.get('user'))
+    #     ratings = Rating.objects.get(user__id=request.data.get('user'), product__id=productId)
+    #     serializer = RatingSerializer(instance=ratings, data=request.data)
+    #     if serializer.is_valid():  # only when data ?= data. in the create method we are providing only data
+    #         serializer.save(product=product)
+    #         return Response(serializer.data)
 
 
-@api_view(['GET', 'POST'])
+# @api_view(['GET', 'PUT'])
+# def change_rating_for_user(request, productId, userId):
+#     try:
+#         product = Product.objects.get(id=productId)
+#     except Product.DoesNotExist as e:
+#         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+#
+#     if request.method == 'GET':
+#         ratings = Rating.objects.filter(user__id=userId, product__id=productId)
+#         serializer = RatingSerializer(ratings, many=True)
+#         return Response(serializer.data)
+#
+#     if request.method == 'PUT':
+#         ratings = Rating.objects.filter(user__id=userId, product__id=productId)
+#         serializer = RatingSerializer(instance=ratings, data=request.data)
+#         print(request.data)
+#         if serializer.is_valid():  # only when data ?= data. in the create method we are providing only data
+#             serializer.save(product=product)
+#             return Response(serializer.data)
+
+
+@api_view(['GET', 'POST', 'DELETE'])
 def comments_by_product(request, id):
     try:
         product = Product.objects.get(id=id)
@@ -60,6 +103,24 @@ def comments_by_product(request, id):
             serializer.save(product=product)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({"error": "Error posting comment"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+@api_view(['GET'])
+def get_comment_of_a_user(request, productId, userId):
+    try:
+        product = Product.objects.get(id=productId)
+    except:
+        return Response({'error': 'Product not Found'}, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'GET':
+        # comments = product.comments.all()
+        comments = Commentary.objects.filter(user__id=userId, product__id=productId)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
+@api_view(['DELETE'])
+def delete_comment_of_a_user(request, commentId):
+    if request.method == 'DELETE':
+        comment = Commentary.objects.get(id=commentId)
+        comment.delete()
+        return Response({"delete": "success"})
+
 
 @api_view(['GET'])
 def productsByCategory(request, id):

@@ -21,4 +21,5 @@
     <string name="placeholder_text">Placeholder text</string>
     <string name="write_your_comment">Write your comment</string>
     <string name="add">add</string>
+    <string name="addcart">AddCart</string>
 </resources>

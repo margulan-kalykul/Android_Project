@@ -1,6 +1,8 @@
 package com.example.finalproject
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,14 +17,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.finalproject.databinding.ActivityProductBinding
 import com.example.finalproject.interfaces.Comment
+import com.example.finalproject.interfaces.ProductsInCart
 import com.example.finalproject.interfaces.UserComment
 import com.example.finalproject.retrofit.RetrofitHelper
 import com.example.finalproject.service.ServerAPI
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
+import java.lang.Exception
 
 class Product : AppCompatActivity() {
     lateinit var binding: ActivityProductBinding
@@ -56,6 +61,41 @@ class Product : AppCompatActivity() {
 //            val rating = binding.ratingBar.rating
 //            Toast.makeText(applicationContext, rating.toString(), Toast.LENGTH_SHORT).show()
 //        }
+
+        val client = OkHttpClient.Builder().build()
+        val retrofit = RetrofitHelper(client)
+        val rf = retrofit.getInstance()
+        val itemAPI = rf.create(ServerAPI::class.java)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            val product = itemAPI.getProduct(productId)
+            val image = product.image
+            val name = product.name
+            binding.apply {
+                Picasso.get().load(image).into(object : com.squareup.picasso.Target {
+                    override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                        productImage.setImageBitmap(bitmap)
+                    }
+
+                    override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+                        productImage.setImageResource(R.drawable.logo)
+                    }
+
+                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+
+                    }
+                })
+                productName.text = name
+            }
+        }
+
+        binding.btnAddCart.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+
+                itemAPI.postCartProducts(userId, ProductsInCart(productId))
+
+            }
+        }
 
         binding.button.setOnClickListener {
             val text = binding.commentFiled.text.toString()
