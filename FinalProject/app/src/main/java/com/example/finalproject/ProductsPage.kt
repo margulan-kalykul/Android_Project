@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
+import com.example.finalproject.interfaces.Product
 
 
 class ProductsPage : AppCompatActivity() {
@@ -30,48 +31,48 @@ class ProductsPage : AppCompatActivity() {
         setContentView(products_page)
         CoroutineScope(Dispatchers.IO).launch {
             val call = itemAPI.getProducts()
-            Log.d("data", call.toString())
+            showList(call)
         }
-        showList()
+
 
         listViewAdapter = ExpandableListViewAdapter(this, chapterList, topicList)
         val eListView = binding.eListView
         eListView.setAdapter(listViewAdapter)
 
     }
-        private fun showList() {
+        private fun showList(call: List<Product>) {
             chapterList = ArrayList()
             topicList = HashMap()
-            (chapterList as ArrayList<String>).add("Chapter 1")
-            (chapterList as ArrayList<String>).add("Chapter 2")
-            (chapterList as ArrayList<String>).add("Chapter 3")
-            (chapterList as ArrayList<String>).add("Chapter 4")
-            (chapterList as ArrayList<String>).add("Chapter 5")
+            (chapterList as ArrayList<String>).add(call[0].name)
+            (chapterList as ArrayList<String>).add(call[1].name)
+            (chapterList as ArrayList<String>).add(call[2].name)
+            (chapterList as ArrayList<String>).add(call[3].name)
+            (chapterList as ArrayList<String>).add(call[4].name)
 
             val topic1 : MutableList<String> = ArrayList()
-            topic1.add("Topic 1")
-            topic1.add("Topic 2")
-            topic1.add("Topic 3")
+            topic1.add(call[0].description)
+            topic1.add(call[0].image)
+            topic1.add(call[0].description)
 
             val topic2 : MutableList<String> = ArrayList()
-            topic2.add("Topic 1")
-            topic2.add("Topic 2")
-            topic2.add("Topic 3")
+            topic2.add(call[1].description)
+            topic2.add(call[1].image)
+            topic2.add(call[1].description)
 
             val topic3 : MutableList<String> = ArrayList()
-            topic3.add("Topic 1")
-            topic3.add("Topic 2")
-            topic3.add("Topic 3")
+            topic3.add(call[2].description)
+            topic3.add(call[2].image)
+            topic3.add(call[2].description)
 
             val topic4 : MutableList<String> = ArrayList()
-            topic4.add("Topic 1")
-            topic4.add("Topic 2")
-            topic4.add("Topic 3")
+            topic4.add(call[3].description)
+            topic4.add(call[3].image)
+            topic4.add(call[3].description)
 
             val topic5 : MutableList<String> = ArrayList()
-            topic5.add("Topic 1")
-            topic5.add("Topic 2")
-            topic5.add("Topic 3")
+            topic5.add(call[4].description)
+            topic5.add(call[4].image)
+            topic5.add(call[4].description)
 
             topicList[chapterList[0]] = topic1
             topicList[chapterList[1]] = topic2
