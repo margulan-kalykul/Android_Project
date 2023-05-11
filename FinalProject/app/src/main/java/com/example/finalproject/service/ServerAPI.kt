@@ -15,6 +15,8 @@ interface ServerAPI {
     suspend fun getUserEmail(@Path("username") userName: String?): UserEmail
     @GET("products/")
     suspend fun getProducts(): List<Product>
+    @POST("products/")
+    suspend fun postProducts(@Body product: Product): Product
     @GET("product/{id}/commentaries")
     suspend fun getProductComments(@Path("id") id: String?): List<Comment>
     @GET("product/{id}")
