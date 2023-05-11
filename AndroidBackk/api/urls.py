@@ -15,6 +15,7 @@ urlpatterns = [
     path('category/<int:id>/products/', productsByCategory),
 
     path('cart/<int:id>/', list_of_orders_by_user),
+    path('cart/<int:userId>/<int:productId>/', delete_product_from_order),
 
     path('register/user/', UserCreateView.as_view()),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

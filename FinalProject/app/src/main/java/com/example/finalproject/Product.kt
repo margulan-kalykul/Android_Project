@@ -33,7 +33,7 @@ class Product : AppCompatActivity() {
         setContentView(productLayout)
 
         // Setup at the start
-        var productId = intent.extras?.getInt("id")
+        var productId = intent.extras?.getInt("productId")
         if (productId == null)
             productId = 1
         binding.commentFiled.clearFocus()

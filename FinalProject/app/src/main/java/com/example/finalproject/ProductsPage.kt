@@ -61,7 +61,9 @@ class ProductsPage : AppCompatActivity() {
             (chapterList as ArrayList<String>).add(category[item].name)
             val topic : MutableList<PrInterface> = ArrayList()
             for(prod in call){
-                if(prod.category == category[item].id){
+
+                if(prod.category.toInt() == category[item].id){
+                    Log.d("", "asdas")
                     topic.add(prod)
                 }
             }
