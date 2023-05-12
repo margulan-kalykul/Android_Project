@@ -16,5 +16,5 @@ data class Product(
     @SerializedName("category")
     val category: Number,
     @SerializedName("user")
-    val user: Int
+    val user: Int = 1
 )

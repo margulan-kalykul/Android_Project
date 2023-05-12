@@ -260,11 +260,14 @@
                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
+                            tools:ignore="parent"
+                            android:background="@null"
                             android:id="@+id/rcProduct"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
 
                     </LinearLayout>
+
             </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
