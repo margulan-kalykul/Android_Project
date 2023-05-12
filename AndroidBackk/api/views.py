@@ -21,8 +21,15 @@ def list_of_products(request):
         if serializer.is_valid():  # only when data ?= data. in the create method we are providing only data
             serializer.save()
             return Response(serializer.data)
-
-
+@api_view(['GET'])
+def product_of_a_user(request, userId):
+    try:
+        product = Product.objects.filter(user__id=userId)
+    except Product.DoesNotExist as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'GET':
+        serializer = ProductSerializer(product, many=True)
+        return Response(serializer.data)
 @api_view(['GET'])
 def list_of_categories(request):
     if request.method == 'GET':
@@ -185,7 +192,7 @@ def find_email_by_username(request, username):
         data = {'email': user.email}
         return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def product_by_id(request, id):
     try:
         product = Product.objects.get(id=id)
@@ -194,7 +201,15 @@ def product_by_id(request, id):
     if request.method == 'GET':
         serializer = ProductSerializer(product)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
+    if request.method == 'PUT':
+        serializer = ProductSerializer(instance=product, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response({"Error adding": "error"}, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'DELETE':
+        product.delete()
+        return Response({"delete": "success"})
 
 class ProductSearchView(View):
     def get(self, request):

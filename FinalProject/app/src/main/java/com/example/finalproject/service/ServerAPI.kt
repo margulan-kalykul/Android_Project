@@ -23,6 +23,10 @@ interface ServerAPI {
     suspend fun postProductComments(@Path("id") id: Int, @Body comment: UserComment): Comment
     @GET("product/{id}")
     suspend fun getProduct(@Path("id") id: Int): Product
+    @PUT("product/{id}/")
+    suspend fun updateProduct(@Path("id") id: Int, @Body product: Product): Product
+    @DELETE("product/{id}/")
+    suspend fun deleteProduct(@Path("id") id: Int)
     @GET("cart/{userId}")
     suspend fun getCartProducts(@Path("userId") userId: Int): List<ProductsInCart>
     @POST("cart/{userId}/")
@@ -33,6 +37,8 @@ interface ServerAPI {
     suspend fun registerUser(@Body user: UserRegister): UserResponse
     @GET("categories/")
     suspend fun getCategories(): List<Category>
+    @GET("user/{userId}/products/")
+    suspend fun getProductOfAUser(@Path("userId") userId: Int): List<Product>
     @POST("token/")
     suspend fun postUserCredentials(
         @Body userCred: UserLogin): Token
