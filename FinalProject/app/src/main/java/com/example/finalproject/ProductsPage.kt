@@ -58,25 +58,21 @@ class ProductsPage : AppCompatActivity() {
                             binding.apply {
                                 chapterList = ArrayList()
                                 topicList = HashMap()
-                                for (item in 1..2){
-                                    if (1 == item) {
-                                        (chapterList as ArrayList<String>).add("Book")
-                                    }
-                                    else {
-                                        (chapterList as ArrayList<String>).add("Pencil")
-                                    }
+                                for (item in 1 until 2){
+                                    (chapterList as ArrayList<String>).add("SearchResult")
                                     val topic : MutableList<PrInterface> = ArrayList()
                                     for (prod1 in list.results) {
                                         val prod = PrInterface(
                                             prod1.id, prod1.name,
                                             prod1.description, prod1.price,
-                                            prod1.image, prod1.category
+                                            prod1.image, prod1.category, userId
                                         )
                                         if (prod.category.toInt() == call[item].category.toInt()) {
                                             topic.add(prod)
                                         }
                                     }
-                                    topicList[chapterList[item-1]] = topic
+                                    Log.d("topic", topic.toString())
+                                    topicList["SearchResult"] = topic
                                 }
                                 listViewAdapter = ExpandableListViewAdapter(this@ProductsPage, chapterList, topicList, userId, userName)
                                 Log.d("tuopics", topicList.toString())
