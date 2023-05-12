@@ -25,6 +25,7 @@ class PersonalCabinet : AppCompatActivity(), ProductAdapter.Listener {
     private val retrofit = RetrofitHelper(client)
     private val rf = retrofit.getInstance()
     private val itemAPI = rf.create(ServerAPI::class.java)
+    private lateinit var userName: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,12 +36,10 @@ class PersonalCabinet : AppCompatActivity(), ProductAdapter.Listener {
         val PersonalCabinetPage = binding.root
         setContentView(PersonalCabinetPage)
 
-        val userId: Int? = intent.extras?.getInt("userId")
-        val userName: String? = intent.extras?.getString("userName")
+        val userId: Int = intent.getIntExtra("userId", 1)
+        userName = intent.getStringExtra("userName").toString()
         val userEmail: String? = intent.extras?.getString("userEmail")
-        if (userId != null) {
-            Log.d("data", userId.toString())
-        }
+
         setContents(userName, userEmail)
 
         binding.productsButton.setOnClickListener {
@@ -66,13 +65,13 @@ class PersonalCabinet : AppCompatActivity(), ProductAdapter.Listener {
             startActivity(intent)
         }
 
-//        CoroutineScope(Dispatchers.Main).launch {
-//            val products = itemAPI.getProductsofAUser(userId)
-//            for(product in products) {
-//                val productCabinet = ProductCabinet(product.id, product.name, product.description, product.price.toDouble(), product.image)
-//                adapter.addProduct(productCabinet)
-//            }
-//        }
+        CoroutineScope(Dispatchers.Main).launch {
+            val products = itemAPI.getProductOfAUser(userId)
+            for(product in products) {
+                val productCabinet = ProductCabinet(product.id, product.name, product.description, product.price.toDouble(), product.image)
+                adapter.addProduct(productCabinet)
+            }
+        }
     }
 
     private fun setContents(username: String?, email: String?){
@@ -94,11 +93,14 @@ class PersonalCabinet : AppCompatActivity(), ProductAdapter.Listener {
         editor.apply()
     }
     override fun onClick(product: ProductCabinet) {
-        TODO("Not yet implemented")
+        val intent = Intent(this, com.example.finalproject.Product::class.java)
+        intent.putExtra("userName", userName)
+        intent.putExtra("productId", product.id)
+        startActivity(intent)
     }
 
     override fun onDelete(product: ProductCabinet) {
-        TODO("Not yet implemented")
+        adapter.deleteProduct(product)
     }
 
     override fun onUpdate(product: ProductCabinet) {
