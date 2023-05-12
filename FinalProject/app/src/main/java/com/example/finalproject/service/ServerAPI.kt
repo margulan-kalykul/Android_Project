@@ -37,7 +37,7 @@ interface ServerAPI {
     suspend fun postUserCredentials(
         @Body userCred: UserLogin): Token
 
-    @GET("products/search/")
+    @GET("products/search")
     suspend fun getProductsByName(@Query("q") name: String): SearchResult
 
     @GET("product/{productId}/commentaries/{userId}")
