@@ -18,7 +18,7 @@ class Product(models.Model):
     price = models.FloatField()
     image = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products', null=True)
 
     # def avg_rating(self) -> float:
     #     return Rating.objects.filter(product=self).aggregate(Avg("rating"))["rating__avg"] or 0

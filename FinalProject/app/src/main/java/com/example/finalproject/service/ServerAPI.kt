@@ -33,6 +33,8 @@ interface ServerAPI {
     suspend fun registerUser(@Body user: UserRegister): UserResponse
     @GET("categories/")
     suspend fun getCategories(): List<Category>
+    @GET("user/{userId}/products/")
+    suspend fun getProductOfAUser(@Path("userId") userId: Int): List<Product>
     @POST("token/")
     suspend fun postUserCredentials(
         @Body userCred: UserLogin): Token
