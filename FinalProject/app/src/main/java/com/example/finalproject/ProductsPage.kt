@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.SearchView
 import com.example.finalproject.databinding.ActivityProductPageBinding
 import com.example.finalproject.retrofit.RetrofitHelper
 import com.example.finalproject.service.ServerAPI
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import com.example.finalproject.interfaces.Product as PrInterface
 import com.example.finalproject.interfaces.Category
+import com.example.finalproject.interfaces.SearchResult
 import kotlinx.coroutines.async
 class ProductsPage : AppCompatActivity() {
     lateinit var binding: ActivityProductPageBinding
@@ -36,12 +38,66 @@ class ProductsPage : AppCompatActivity() {
             val category = itemAPI.getCategories()
 
             showList(call, category)
-
-
             listViewAdapter = ExpandableListViewAdapter(this@ProductsPage, chapterList, topicList, userId, userName)
-            Log.d("tuopics", topicList.toString())
             val eListView = binding.eListView
             eListView.setAdapter(listViewAdapter)
+
+            binding.sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(text: String?): Boolean {
+                    CoroutineScope(Dispatchers.IO).launch {
+//                        Log.d("text", text.toString())
+                        val list: SearchResult? =
+                            text?.let { itemAPI.getProductsByName(it) }
+                        if (list == null)
+                            return@launch
+                        Log.d("flag", "got here")
+                        runOnUiThread {
+                            binding.apply {
+                                chapterList = ArrayList()
+                                topicList = HashMap()
+                                //      (chapterList as ArrayList<String>).add(call[0].name)
+                                //     (chapterList as ArrayList<String>).add(call[1].name)
+                                //     (chapterList as ArrayList<String>).add(call[2].name)
+                                //    (chapterList as ArrayList<String>).add(call[3].name)
+                                //     (chapterList as ArrayList<String>).add(call[4].name)
+                                for (item in 1..2){
+                                    if (1 == item) {
+                                        (chapterList as ArrayList<String>).add("Book")
+                                    }
+                                    else {
+                                        (chapterList as ArrayList<String>).add("Pencil")
+                                    }
+                                    Log.d("chapterList", chapterList.toString())
+                                    val topic : MutableList<PrInterface> = ArrayList()
+                                    Log.d("results", list.results.toString())
+                                    for (prod1 in list.results) {
+                                        val prod = PrInterface(
+                                            prod1.id, prod1.name,
+                                            prod1.description, prod1.price,
+                                            prod1.image, prod1.category
+                                        )
+                                        if (prod.category.toInt() == call[item].category.toInt()) {
+                                            Log.d("check", "entered")
+                                            topic.add(prod)
+                                        }
+                                    }
+                                    Log.d("check2", topic.toString())
+                                    topicList[chapterList[item-1]] = topic
+                                }
+                                listViewAdapter = ExpandableListViewAdapter(this@ProductsPage, chapterList, topicList, userId, userName)
+                                Log.d("tuopics", topicList.toString())
+                                val eListView = binding.eListView
+                                eListView.setAdapter(listViewAdapter)
+                            }
+                        }
+                    }
+                    return true
+                }
+
+                override fun onQueryTextChange(text: String?): Boolean {
+                    return true
+                }
+            })
         }
 //        CoroutineScope(Dispatchers.Main).launch {
 //            pr.await()
