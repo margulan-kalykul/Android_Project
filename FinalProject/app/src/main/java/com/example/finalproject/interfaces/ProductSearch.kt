@@ -2,7 +2,7 @@ package com.example.finalproject.interfaces
 
 import com.google.gson.annotations.SerializedName
 
-data class Product(
+data class ProductSearch(
     @SerializedName("id")
     val id: Int,
     @SerializedName("name")
@@ -13,8 +13,6 @@ data class Product(
     val price: Float,
     @SerializedName("image")
     val image: String,
-    @SerializedName("category")
-    val category: Number,
-    @SerializedName("user")
-    val user: Int = 1
+    @SerializedName("category_id")
+    val category: Number
 )

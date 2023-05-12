@@ -130,7 +130,7 @@ class Product : AppCompatActivity() {
         binding.btnAddCart.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 itemAPI.postCartProducts(userId, ProductsInCart(productId))
-                Toast.makeText(applicationContext, "Added to cart", Toast.LENGTH_SHORT).show()
+
             }
         }
 
