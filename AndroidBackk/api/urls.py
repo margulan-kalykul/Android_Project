@@ -24,6 +24,7 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('products/search', ProductSearchView.as_view()),
+    path('user/<int:userId>/products/', product_of_a_user),
 
     path('user/<str:username>/', find_user_by_username),
     path('user/email/<str:username>', find_email_by_username),

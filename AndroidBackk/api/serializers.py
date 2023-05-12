@@ -12,8 +12,6 @@ class ProductSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 
-
-
 class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:

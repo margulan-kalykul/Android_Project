@@ -21,7 +21,15 @@ def list_of_products(request):
         if serializer.is_valid():  # only when data ?= data. in the create method we are providing only data
             serializer.save()
             return Response(serializer.data)
-
+@api_view(['GET', 'PUT', 'DELETE'])
+def product_of_a_user(request, userId):
+    try:
+        product = Product.objects.filter(user__id=userId)
+    except Product.DoesNotExist as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'GET':
+        serializer = ProductSerializer(product, many=True)
+        return Response(serializer.data)
 
 @api_view(['GET'])
 def list_of_categories(request):
