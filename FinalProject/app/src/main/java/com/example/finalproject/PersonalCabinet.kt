@@ -102,6 +102,9 @@ class PersonalCabinet : AppCompatActivity(), ProductAdapter.Listener {
 
     override fun onDelete(product: ProductCabinet) {
         adapter.deleteProduct(product)
+        CoroutineScope(Dispatchers.Main).launch {
+            itemAPI.deleteProduct(product.id)
+        }
     }
 
     override fun onUpdate(product: ProductCabinet) {
