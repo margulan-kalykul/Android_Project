@@ -40,6 +40,7 @@ class PersonalCabinet : AppCompatActivity() {
         }
         binding.textView7.setOnClickListener {
             val intent = Intent(this, AddProduct::class.java)
+            intent.putExtra("userId", userId)
             startActivity(intent)
         }
         binding.cartButton.setOnClickListener {

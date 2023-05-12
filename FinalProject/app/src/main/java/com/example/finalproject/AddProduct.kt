@@ -49,7 +49,7 @@ class AddProduct : AppCompatActivity() {
         val productDescription = binding.editTextTextPersonName2
         val productPrice = binding.editTextNumber
         val productURL = binding.editTextTextPersonName3
-
+        val userId = intent.getIntExtra("userId", 1)
 
         CoroutineScope(Dispatchers.Main).launch {
             categories = itemAPI.getCategories()
@@ -73,7 +73,7 @@ class AddProduct : AppCompatActivity() {
                 val description = productDescription.text.toString()
                 val price = productPrice.text.toString().toFloat()
                 val url = productURL.text.toString()
-                val usersProduct: Product = Product(0, name, description, price, url, category.id)
+                val usersProduct: Product = Product(0, name, description, price, url, category.id, userId)
                 CoroutineScope(Dispatchers.IO).launch {
                     val postt = itemAPI.postProducts(usersProduct)
                     val intent = Intent(applicationContext, ProductsPage::class.java)
