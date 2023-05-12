@@ -40,6 +40,12 @@ class ProductsPage : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             val call = itemAPI.getProducts()
             val category = itemAPI.getCategories()
+
+            showList(call, category)
+            listViewAdapter = ExpandableListViewAdapter(this@ProductsPage, chapterList, topicList, userId, userName)
+            val eListView = binding.eListView
+            eListView.setAdapter(listViewAdapter)
+
             binding.sv.setOnQueryTextListener(object : OnQueryTextListener{
                 override fun onQueryTextSubmit(text: String?): Boolean {
                     CoroutineScope(Dispatchers.IO).launch {
@@ -96,14 +102,6 @@ class ProductsPage : AppCompatActivity() {
                     return true
                 }
             })
-
-
-//            showList(call, category)
-//
-//            listViewAdapter = ExpandableListViewAdapter(this@ProductsPage, chapterList, topicList, userId, userName)
-//            Log.d("tuopics", topicList.toString())
-//            val eListView = binding.eListView
-//            eListView.setAdapter(listViewAdapter)
         }
 
 //        CoroutineScope(Dispatchers.Main).launch {
